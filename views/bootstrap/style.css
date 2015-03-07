@@ -1,0 +1,55 @@
+body, p {
+    font-size: 18px;
+}
+.demo h3 {
+    margin: -15px 0px !important;
+}
+.demo-links {
+    text-align: left !important;
+}
+.demo-links a {
+    color: blue;
+}
+.demo-links a:hover{
+    color: #CC9933;
+}
+.link1 {
+    text-decoration: underline;
+}
+.demo-table td {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.demo-table {
+    margin-bottom: 10px;
+}
+fieldset {
+    margin-bottom: 40px;
+}
+label {
+    margin-right: 15px;
+    margin-left: 15px;
+}
+.alert{
+    text-align: left !important;
+}
+.input-error {
+    border: 1px solid #ff5468;
+    border-radius: 2px;
+}
+.input-error span {
+    float:right;
+    color: #870010;
+    font-weight: bold;
+    margin-right: 10px;
+    margin-top: 3px;
+}
+.btn {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.button-demo {
+    width: 200px;
+    height: 90px;
+    cursor: initial;
+}

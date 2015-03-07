@@ -1,0 +1,29 @@
+{
+  "name": "cvServer",
+  "version": "0.0.1",
+  "description": "a cv management system",
+  "main": "serverInit.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lindhaugen/Project-NukeSquid.git"
+  },
+  "keywords": [
+    "cv",
+    "management"
+  ],
+  "author": "nukesquid",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lindhaugen/Project-NukeSquid/issues"
+  },
+  "homepage": "https://github.com/Lindhaugen/Project-NukeSquid",
+  "dependencies": {
+    "bootstrap": "^3.3.2",
+    "cookie-session": "^1.1.0",
+    "express": "^4.12.2",
+    "jade": "^1.9.2"
+  }
+}
