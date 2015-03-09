@@ -4,9 +4,9 @@ var jade = require('jade');
 var app = express();
 
 // require subapps
-var cvAppRoot = './routes/cvTools/';
+var cvAppRoot = './routs/cvTools/';
 var createCv = require(cvAppRoot + 'createCv');
-var removeCv = require(cvAppRoot + '');
+var removeCv = require(cvAppRoot + 'removeCv');
 
 // setting up viws
 app.set('views', 'views');
