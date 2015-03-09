@@ -4,7 +4,7 @@ var cvField = document.getElementById('cvAddField');
 
 // create variables for buttons
 var createCvMenu = document.getElementById('createCvMenu');
-var createCvMenu = createCvMenu.getElementsByTagName('button');
+var createCvMenu = createCvMenu.getElementsByTagName('li');
 var forsideTxt = {btn:createCvMenu[0], form:'intro'};
 var hovedside = {btn:createCvMenu[1], form: 'mainpage'};
 var erfaringer = createCvMenu[2];
