@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "cvServer",
   "version": "0.0.1",
   "description": "a cv management system",
@@ -27,4 +28,15 @@
     "express": "^4.12.2",
     "jade": "^1.9.2"
   }
+=======
+  "name": "Nodejs",
+  "version": "1.0.0",
+  "description": "test",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "henrik",
+  "license": "ISC"
+>>>>>>> d8fdf7696fd72a0a6f44fd54d0ccb071563f9fd2
 }
