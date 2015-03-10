@@ -18,7 +18,7 @@ function postToServer(json){
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.open('POST', '/controller', true);
 	xmlhttp.setRequestHeader('Content-type', 'application/json');
-	xmlhttp.send(json);
+	xmlhttp.send(JSON.stringify(json));
 }
 
 
@@ -33,20 +33,26 @@ var consultant = 'magnus';
 // div for creating cv assets
 var cvField = document.getElementById('cvAddField');
 
-
+var currentView;
 // create variables for buttons
 var createCvMenu = document.getElementById('createCvMenu');
 var createCvMenu = createCvMenu.getElementsByTagName('li');
 var forsideTxt = {btn:createCvMenu[0], 
 				  form:'intro', 
 				  responseHandler : function(dom){ // handles recived dom from ajax call
-						dom.getElementsByTagName('button')[0].addEventListener('click', function(e){
-							sendJson.createCv[0].cvIntro = dom.getElementsByTagName('textarea')[0].value;
-							sendJson.author = loginId;
-							sendJson.createCv[0].user = consultant;
-							postToServer(JSON.stringify(sendJson));
-						})}};
-var hovedside = {btn:createCvMenu[1], form: 'mainpage'};
+					dom.getElementsByTagName('button')[0].addEventListener('click', function(e){
+						sendJson.createCv[0].cvIntro = dom.getElementsByTagName('textarea')[0].value;
+						sendJson.author = loginId;
+						sendJson.createCv[0].user = consultant;
+						postToServer(sendJson);
+				 })}};
+// WORK IN PROGRESS!!!
+/*var hovedside = {btn:createCvMenu[1], 
+				 form: 'mainpage',
+				 responseHandler : function (dom) {
+				 	dom.getElementsByTagName
+				 
+}};*/
 var erfaringer = createCvMenu[2];
 
 
@@ -54,7 +60,10 @@ var erfaringer = createCvMenu[2];
 var addBtnEvent = function(obj){
 	this.obj = obj;
 	obj.btn.addEventListener('click', function(e){
-		getCreateCvElement(obj.form, cvField, obj.responseHandler);
+		if (currentView != obj.form){
+			currentView = obj.form;
+			getCreateCvElement(obj.form, cvField, obj.responseHandler);
+		}
 	});
 }
 
