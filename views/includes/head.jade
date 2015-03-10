@@ -4,10 +4,13 @@ head
 	link(rel='stylesheet', type='text/css', href='/bootstrap/bootstrap.min.css')
 	link(rel='stylesheet', type='text/css', href='/bootstrap/bootstrap-theme.min.css')
 body
-	menu
+	header(class='sticky top-bar-container')
 		h1 letnight
-		ul
-			li mineCver
-			li andresCver
-			li kompetanseSøk
-			li logut
+		nav(class='top-bar small-12 columns')
+			ul(class='list-inline')
+				li mineCver
+				li andresCver
+				li kompetanseSøk
+				li 
+					a(href='/createcv') lagCv
+				li logut

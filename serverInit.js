@@ -7,7 +7,7 @@ var app = express();
 var cvAppRoot = './routs/cvTools/';
 var createCv = require(cvAppRoot + 'createCv');
 var removeCv = require(cvAppRoot + 'removeCv');
-
+var controller = require('./routs/controller');
 // setting up viws
 app.set('views', 'views');
 app.set('view engine', 'jade');
@@ -20,6 +20,8 @@ app.get('/', function(req, res){
 });
 // sub app routs 
 app.use('/createcv', createCv);
+app.use('/controller', controller);
+
 
 // bad rout
 app.get('*', function(req, res){
