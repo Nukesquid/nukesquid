@@ -1,0 +1,62 @@
+{
+  "author": "",
+  "timestamp":"",
+  "createcv": [
+    {
+      "user" : "",
+      "cvIntro" : "",
+      "cvMain" : [],
+      "cvExperience" : [
+        {
+         "title" : "",
+         "client" : "",
+         "time" : {
+           "from" : "",
+           "to" : ""
+         },
+         "body" : "",
+         "tags" : []
+        }
+        ]
+    }
+  ],
+  "updateCV": [
+    {
+      "user" : "",
+      "cvIntro" : {
+        "id" : "",
+        "intro": ""
+      },
+      "cvMain" : {
+        "id" : "",
+        "main" : []
+      },
+      "cvExperience": {
+        "id" : "",
+        "title" : "",
+        "time" : {
+          "from" : "",
+          "to" : ""
+        },
+        "body" : "",
+        "tags" : []
+      }
+    }
+  ],
+  "deleteCv" : [
+    {
+      "user" : "",
+      "cvIntroId" : "",
+      "cvMainId" : "",
+      "cvExperienceId" : ""
+    }
+  ],
+  "assembleCv" : [
+    {
+      "user" : "",
+      "cvIntroID" : "",
+      "cvMainId" : "" ,
+      "cvExperienceId" : []
+    }  
+  ]
+}
