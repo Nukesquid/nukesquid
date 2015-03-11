@@ -21,6 +21,33 @@ function postToServer(json){
 	xmlhttp.send(JSON.stringify(json));
 }
 
+// function for cvBtns
+var addBtnEvent = function(obj){
+	this.obj = obj;
+	obj.btn.addEventListener('click', function(e){
+		if (currentView != obj.form){
+			currentView = obj.form;
+			getCreateCvElement(obj.form, cvField, obj.responseHandler);
+		}
+	});
+}
+
+// get taglist from server
+function getTags() {
+	// placeholder until henrik developes serverside api
+	var tempReturnObjs = [{tagId : 1,
+						   tagName : 'JavaScript',
+						   tagCategoryId : 1,
+						   tagCategoryName : 'Utviklingsspråk og rammeverk'},
+						  {tagId : 2,
+						   tagName : 'Pølsevev',
+						   tagCategoryId : '2',
+						   tagCategoryName : 'Spesial skills'}
+						  ];
+	return tempReturnObjs;
+}
+
+// functions end
 
 // json object expected by server
 var sendJson = JSON.parse('{"author":"","timestamp":"","createCv":[{"user":"","cvIntro":"","cvMain":[],"cvExperience":[{"title":"","client":"","time":{"from":"","to":""},"body":"","tags":[]}]}],"updateCV":[{"user":"","cvIntro":{"id":"","intro":""},"cvMain":{"id":"","main":[]},"cvExperience":{"id":"","title":"","time":{"from":"","to":""},"body":"","tags":[]}}],"deleteCv":[{"user":"","cvIntroId":"","cvMainId":"","cvExperienceId":""}],"assembleCv":[{"user":"","cvIntroID":"","cvMainId":"","cvExperienceId":[]}]}');
@@ -37,6 +64,7 @@ var currentView;
 // create variables for buttons
 var createCvMenu = document.getElementById('createCvMenu');
 var createCvMenu = createCvMenu.getElementsByTagName('li');
+// create introForm
 var forsideTxt = {btn:createCvMenu[0], 
 				  form:'intro', 
 				  responseHandler : function(dom){ // handles recived dom from ajax call
@@ -47,25 +75,44 @@ var forsideTxt = {btn:createCvMenu[0],
 						postToServer(sendJson);
 				 })}};
 // WORK IN PROGRESS!!!
-/*var hovedside = {btn:createCvMenu[1], 
+var hovedside = {btn:createCvMenu[1], 
 				 form: 'mainpage',
 				 responseHandler : function (dom) {
-				 	dom.getElementsByTagName
-				 
-}};*/
-var erfaringer = createCvMenu[2];
+					//write all tags til list
+				 	var list = dom.getElementsByTagName('ul')[0];
+					var tags = getTags();
+					for (i=0; i<tags.length;i++){
+						var listElement = document.createElement('li');
+						var checkbox = document.createElement('input');
+						checkbox.type = 'checkbox';
+						checkbox.value = tags[i].tagId;
+						listElement.appendChild(checkbox);
+						listElement.innerHTML += ' ' + tags[i].tagName + ' | ' + tags[i].tagCategoryName;
+						list.appendChild(listElement);
+					}
+					// place selected items in sendJson	
+					dom.getElementsByTagName('button')[0].addEventListener('click', function(e){
+						sendJson.author = loginId;
+						sendJson.createCv[0].user = consultant;
+						var listElements = list.childNodes;
+						for (i=0;i<listElements.length;i++){
+							var checkbox = listElements[i].getElementsByTagName('input')[0];
+							if (checkbox.checked){
+								sendJson.createCv[0].cvMain[sendJson.createCv[0].cvMain.length] = checkbox.value;
+							}
+						}
+						console.log(sendJson);
+						postToServer(sendJson);
+					})}};
+var erfaringer = {btn : createCvMenu[2],
+				  form : 'erfaringer',
+				  responseHandler : function(dom) {
+					var list = dom.getElementsByTagName('ul')[0];
+					
+	}};
 
 
-// function for cvBtns
-var addBtnEvent = function(obj){
-	this.obj = obj;
-	obj.btn.addEventListener('click', function(e){
-		if (currentView != obj.form){
-			currentView = obj.form;
-			getCreateCvElement(obj.form, cvField, obj.responseHandler);
-		}
-	});
-}
+
 
 addBtnEvent(forsideTxt);
 addBtnEvent(hovedside);
