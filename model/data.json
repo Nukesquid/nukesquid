@@ -8,7 +8,7 @@
       "cvMain" : [],
       "cvExperience" : [
         {
-         "title" : "",
+         "role" : "",
          "client" : "",
          "time" : {
            "from" : "",
@@ -18,7 +18,7 @@
          "tags" : []
         }
         ]
-    }
+    } 
   ],
   "updateCV": [
     {
@@ -34,6 +34,7 @@
       "cvExperience": {
         "id" : "",
         "title" : "",
+        "client" : "",
         "time" : {
           "from" : "",
           "to" : ""

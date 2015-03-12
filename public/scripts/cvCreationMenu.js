@@ -50,7 +50,7 @@ function getTags() {
 // functions end
 
 // json object expected by server
-var sendJson = JSON.parse('{"author":"","timestamp":"","createCv":[{"user":"","cvIntro":"","cvMain":[],"cvExperience":[{"title":"","client":"","time":{"from":"","to":""},"body":"","tags":[]}]}],"updateCV":[{"user":"","cvIntro":{"id":"","intro":""},"cvMain":{"id":"","main":[]},"cvExperience":{"id":"","title":"","time":{"from":"","to":""},"body":"","tags":[]}}],"deleteCv":[{"user":"","cvIntroId":"","cvMainId":"","cvExperienceId":""}],"assembleCv":[{"user":"","cvIntroID":"","cvMainId":"","cvExperienceId":[]}]}');
+var sendJson = JSON.parse('{"author":"","timestamp":"","createCv":[{"user":"","cvIntro":"","cvMain":[],"cvExperience":[{"role":"","client":"","time":{"from":"","to":""},"body":"","tags":[]}]}],"updateCV":[{"user":"","cvIntro":{"id":"","intro":""},"cvMain":{"id":"","main":[]},"cvExperience":{"id":"","title":"","client":"","time":{"from":"","to":""},"body":"","tags":[]}}],"deleteCv":[{"user":"","cvIntroId":"","cvMainId":"","cvExperienceId":""}],"assembleCv":[{"user":"","cvIntroID":"","cvMainId":"","cvExperienceId":[]}]}');
 
 // temp vars for development 
 var loginId = 'root';
@@ -105,17 +105,45 @@ var hovedside = {btn:createCvMenu[1],
 						postToServer(sendJson);
 					})}};
 var erfaringer = {btn : createCvMenu[2],
-				  form : 'erfaringer',
+				  form : 'experiences',
 				  responseHandler : function(dom) {
-					var list = dom.getElementsByTagName('ul')[0];
-					
-	}};
+					//write all tags til list
+				 	var list = dom.getElementsByTagName('ul')[0];
+					var tags = getTags();
+					for (i=0; i<tags.length;i++){
+						var listElement = document.createElement('li');
+						var checkbox = document.createElement('input');
+						checkbox.type = 'checkbox';
+						checkbox.value = tags[i].tagId;
+						listElement.appendChild(checkbox);
+						listElement.innerHTML += ' ' + tags[i].tagName + ' | ' + tags[i].tagCategoryName;
+						list.appendChild(listElement);
+					}
+					dom.getElementsByTagName('button')[0].addEventListener('click', function(e){
+						var inputs = dom.getElementsByTagName('input');
+						sendJson.author = loginId;
+						sendJson.createCv[0].user = consultant;
+						sendJson.createCv[0].cvExperience[0].role = inputs[0];
+						sendJson.createCv[0].cvExperience[0].role = inputs[1]
+ 						sendJson.createCv[0].cvExperience[0].time.from = inputs[2];
+						sendJson.createCv[0].cvExperience[0].time.to = inputs[3];
+						sendJson.createCv[0].cvExperience[0].body = inputs[4];
+						// add tags
+						var listElements = list.childNodes;
+						for (i=0;i<listElements.length;i++){
+							var checkbox = listElements[i].getElementsByTagName('input')[0];
+							if (checkbox.checked){
+								sendJson.createCv[0].cvExperience[0].tags[sendJson.createCv[0].cvExperience[0].tags.length] = checkbox.value;
+							}
+						}
+						console.log(sendJson);
+						postToServer(sendJson);
+					})}};
 
-
-
-
+// createCvmenu functionality
 addBtnEvent(forsideTxt);
 addBtnEvent(hovedside);
+addBtnEvent(erfaringer);
 
 /*
 *	form stuff
