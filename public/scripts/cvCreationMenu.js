@@ -50,7 +50,7 @@ function getTags() {
 // functions end
 
 // json object expected by server
-var sendJson = JSON.parse('{"author":"","timestamp":"","createCv":[{"user":"","cvIntro":"","cvMain":[],"cvExperience":[{"role":"","client":"","time":{"from":"","to":""},"body":"","tags":[]}]}],"updateCV":[{"user":"","cvIntro":{"id":"","intro":""},"cvMain":{"id":"","main":[]},"cvExperience":{"id":"","title":"","client":"","time":{"from":"","to":""},"body":"","tags":[]}}],"deleteCv":[{"user":"","cvIntroId":"","cvMainId":"","cvExperienceId":""}],"assembleCv":[{"user":"","cvIntroID":"","cvMainId":"","cvExperienceId":[]}]}');
+var sendJson = JSON.parse('{"author":"","timestamp":"","createCv":[{"user":"","mainCv":{"cvNavn":"","introTxt":"","cvTags":[]},"edu":{"sted":"","grad":""},"cvExperience":{"role":"","client":"","from":"","to":"","body":"","tags":[]}}],"updateCV":[{"user":"","cvIntro":{"id":"","intro":""},"cvMain":{"id":"","main":[]},"cvExperience":{"id":"","title":"","client":"","time":{"from":"","to":""},"body":"","tags":[]}}],"deleteCv":[{"user":"","cvIntroId":"","cvMainId":"","cvExperienceId":""}],"assembleCv":[{"user":"","cvIntroID":"","cvMainId":"","cvExperienceId":[]}]}');
 
 // temp vars for development 
 var loginId = 'root';
@@ -68,10 +68,31 @@ var createCvMenu = createCvMenu.getElementsByTagName('li');
 var forsideTxt = {btn:createCvMenu[0], 
 				  form:'intro', 
 				  responseHandler : function(dom){ // handles recived dom from ajax call
+					//write all tags til list
+				 	var list = dom.getElementsByTagName('ul')[0];
+					var tags = getTags();
+					for (i=0; i<tags.length;i++){
+						var listElement = document.createElement('li');
+						var checkbox = document.createElement('input');
+						checkbox.type = 'checkbox';
+						checkbox.value = tags[i].tagId;
+						listElement.appendChild(checkbox);
+						listElement.innerHTML += ' ' + tags[i].tagName + ' | ' + tags[i].tagCategoryName;
+						list.appendChild(listElement);
+					}
 					dom.getElementsByTagName('button')[0].addEventListener('click', function(e){
-						sendJson.createCv[0].cvIntro = dom.getElementsByTagName('textarea')[0].value;
+						sendJson.createCv[0].mainCv.cvName = dom.getElementsByTagName('input')[0];
+						sendJson.createCv[0].mainCv.introTxt = dom.getElementsByTagName('textarea')[0].value;
 						sendJson.author = loginId;
 						sendJson.createCv[0].user = consultant;
+						// place tags in json
+						var listElements = list.childNodes;
+						for (i=0;i<listElements.length;i++){
+							var checkbox = listElements[i].getElementsByTagName('input')[0];
+							if (checkbox.checked){
+								sendJson.createCv[0].mainCv.cvTags[sendJson.createCv[0].mainCv.cvTags.length] = checkbox.value;
+							}
+						}
 						postToServer(sendJson);
 				 })}};
 // WORK IN PROGRESS!!!
