@@ -1,8 +1,12 @@
+//header, menybaren
 include ./includes/head.jade
-menu(id='createCvMenu')
-	ul(class='list-inline')
+menu#createCvMenu
+	ul.list-inline
 		li Forsidetest 
 		li HovedSide
 		li Erfaringer
-div(id='cvAddField')
+#cvAddField
 script(type='text/javascript', src='/scripts/cvCreationMenu.js')
+
+//Footer
+include ./includes/footer.jade

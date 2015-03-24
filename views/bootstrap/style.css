@@ -1,8 +1,18 @@
+@import url("normalize.css");
+@import url("bootstrap.css");
+@import url("bootstrap.min.css");
+@import url("bootstrap-theme.css");
+@import url("bootstrap-theme.min.css");
+
+.logo{
+    background-repeat: no-repeat;
+    float: left;
+}
 body, p {
     font-size: 18px;
 }
 .demo h3 {
-    margin: -15px 0px !important;
+    margin : -15px 0px !important;
 }
 .demo-links {
     text-align: left !important;
