@@ -50,7 +50,7 @@ function getTags() {
 // functions end
 
 // json object expected by server
-var sendJson = JSON.parse('{"author":"","timestamp":"","createCv":[{"user":"","cvIntro":"","cvMain":[],"cvExperience":[{"role":"","client":"","time":{"from":"","to":""},"body":"","tags":[]}]}],"updateCV":[{"user":"","cvIntro":{"id":"","intro":""},"cvMain":{"id":"","main":[]},"cvExperience":{"id":"","title":"","client":"","time":{"from":"","to":""},"body":"","tags":[]}}],"deleteCv":[{"user":"","cvIntroId":"","cvMainId":"","cvExperienceId":""}],"assembleCv":[{"user":"","cvIntroID":"","cvMainId":"","cvExperienceId":[]}]}');
+var sendJson = JSON.parse('{"author":"","timestamp":"","createCv":[{"user":"","mainCv":{"cvNavn":"","introTxt":"","cvTags":[]},"edu":{"sted":"","grad":""},"cvExperience":{"role":"","client":"","from":"","to":"","body":"","tags":[]}}],"updateCV":[{"user":"","cvIntro":{"id":"","intro":""},"cvMain":{"id":"","main":[]},"cvExperience":{"id":"","title":"","client":"","time":{"from":"","to":""},"body":"","tags":[]}}],"deleteCv":[{"user":"","cvIntroId":"","cvMainId":"","cvExperienceId":""}],"assembleCv":[{"user":"","cvIntroID":"","cvMainId":"","cvExperienceId":[]}]}');
 
 // temp vars for development 
 var loginId = 'root';
@@ -65,19 +65,9 @@ var currentView;
 var createCvMenu = document.getElementById('createCvMenu');
 var createCvMenu = createCvMenu.getElementsByTagName('li');
 // create introForm
-var forsideTxt = {btn:createCvMenu[0], 
-				  form:'intro', 
+var hovedSide = {btn:createCvMenu[0], 
+				  form:'main', 
 				  responseHandler : function(dom){ // handles recived dom from ajax call
-					dom.getElementsByTagName('button')[0].addEventListener('click', function(e){
-						sendJson.createCv[0].cvIntro = dom.getElementsByTagName('textarea')[0].value;
-						sendJson.author = loginId;
-						sendJson.createCv[0].user = consultant;
-						postToServer(sendJson);
-				 })}};
-// WORK IN PROGRESS!!!
-var hovedside = {btn:createCvMenu[1], 
-				 form: 'mainpage',
-				 responseHandler : function (dom) {
 					//write all tags til list
 				 	var list = dom.getElementsByTagName('ul')[0];
 					var tags = getTags();
@@ -90,18 +80,32 @@ var hovedside = {btn:createCvMenu[1],
 						listElement.innerHTML += ' ' + tags[i].tagName + ' | ' + tags[i].tagCategoryName;
 						list.appendChild(listElement);
 					}
-					// place selected items in sendJson	
 					dom.getElementsByTagName('button')[0].addEventListener('click', function(e){
+						sendJson.createCv[0].mainCv.cvName = dom.getElementsByTagName('input')[0].value;
+						sendJson.createCv[0].mainCv.introTxt = dom.getElementsByTagName('textarea')[0].value;
 						sendJson.author = loginId;
 						sendJson.createCv[0].user = consultant;
+						// place tags in json
 						var listElements = list.childNodes;
 						for (i=0;i<listElements.length;i++){
 							var checkbox = listElements[i].getElementsByTagName('input')[0];
 							if (checkbox.checked){
-								sendJson.createCv[0].cvMain[sendJson.createCv[0].cvMain.length] = checkbox.value;
+								sendJson.createCv[0].mainCv.cvTags[sendJson.createCv[0].mainCv.cvTags.length] = checkbox.value;
 							}
 						}
-						console.log(sendJson);
+						postToServer(sendJson);
+				 })}};
+// WORK IN PROGRESS!!!
+var utdanning = {btn:createCvMenu[1], 
+				 form: 'edu',
+				 responseHandler : function (dom) {
+					// place selected items in sendJson	
+					dom.getElementsByTagName('button')[0].addEventListener('click', function(e){
+						sendJson.author = loginId;
+						sendJson.createCv[0].user = consultant;
+						var inputs = dom.getElementsByTagName('input');
+						sendJson.createCv[0].edu.grad = inputs[0].value						
+						sendJson.createCv[0].edu.sted = inputs[1].value;
 						postToServer(sendJson);
 					})}};
 var erfaringer = {btn : createCvMenu[2],
@@ -123,17 +127,17 @@ var erfaringer = {btn : createCvMenu[2],
 						var inputs = dom.getElementsByTagName('input');
 						sendJson.author = loginId;
 						sendJson.createCv[0].user = consultant;
-						sendJson.createCv[0].cvExperience[0].role = inputs[0];
-						sendJson.createCv[0].cvExperience[0].role = inputs[1]
- 						sendJson.createCv[0].cvExperience[0].time.from = inputs[2];
-						sendJson.createCv[0].cvExperience[0].time.to = inputs[3];
-						sendJson.createCv[0].cvExperience[0].body = inputs[4];
+						sendJson.createCv[0].cvExperience.role = inputs[0].value;
+						sendJson.createCv[0].cvExperience.client = inputs[1].value;
+ 						sendJson.createCv[0].cvExperience.from = inputs[2].value;
+						sendJson.createCv[0].cvExperience.to = inputs[3].value;
+						sendJson.createCv[0].cvExperience.body = dom.getElementsByTagName('textarea')[0].value;
 						// add tags
 						var listElements = list.childNodes;
 						for (i=0;i<listElements.length;i++){
 							var checkbox = listElements[i].getElementsByTagName('input')[0];
 							if (checkbox.checked){
-								sendJson.createCv[0].cvExperience[0].tags[sendJson.createCv[0].cvExperience[0].tags.length] = checkbox.value;
+								sendJson.createCv[0].cvExperience.tags[sendJson.createCv[0].cvExperience.tags.length] = checkbox.value;
 							}
 						}
 						console.log(sendJson);
@@ -141,8 +145,8 @@ var erfaringer = {btn : createCvMenu[2],
 					})}};
 
 // createCvmenu functionality
-addBtnEvent(forsideTxt);
-addBtnEvent(hovedside);
+addBtnEvent(hovedSide);
+addBtnEvent(utdanning);
 addBtnEvent(erfaringer);
 
 /*

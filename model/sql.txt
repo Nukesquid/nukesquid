@@ -1,0 +1,61 @@
+CREATE TABLE Utdanning (
+	utdanningid INT(11) AUTO_INCREMENT PRIMARY KEY,
+	brukerId INT(11),
+	utdanningSted VARCHAR(255),
+	utdanningGrad VARCHAR(255),
+	utdanningTid VARCHAR(255)
+);
+CREATE TABLE Brukere (
+	brukerId INT(11) AUTO_INCREMENT PRIMARY KEY,
+	fornavn VARCHAR(255),
+	etternavn VARCHAR(255),
+	epost VARCHAR(255),
+	tlf VARCHAR(12)
+);
+CREATE TABLE Kunder (
+	kundeId INT(11) AUTO_INCREMENT PRIMARY KEY,
+	kundeNavn VARCHAR(255)
+);
+CREATE TABLE UtdanningLink (
+	utdanningId INT(11),
+	cvId INT(11),
+	PRIMARY KEY(utdanningId, cvId)
+);
+CREATE TABLE Cv (
+	cvID INT(11) AUTO_INCREMENT PRIMARY KEY,
+	brukerID INT(11),
+	cvIntroduksjon VARCHAR(1000),
+	opprettelsesDato TIMESTAMP,
+	endreatDato TIMESTAMP,
+	cvNavn VARCHAR(255)
+);
+CREATE TABLE ReferanseLink (
+	referanseId INT (11),
+	cvId int(11),
+	PRIMARY KEY(referanseId, cvId)
+);
+CREATE TABLE Referanser (
+	referanseId INT(11) AUTO_INCREMENT PRIMARY KEY,
+	brukerID INT(11),
+	referanseTekst VARCHAR(2000),
+	tidFra DATE,
+	tidTil DATE,
+	referanseRolle VARCHAR(255),
+	kundeId INT(11)
+);
+CREATE TABLE TeknologiLink (
+	teknologiId INT(11),
+	cvId INT(11),
+	referanseId INT(11),
+	PRIMARY KEY(teknologiId, cvId, referanseId)
+);
+CREATE TABLE Teknologier (
+	teknologiId INT(11) AUTO_INCREMENT PRIMARY KEY,
+	teknologiNavn VARCHAR(255),
+	kategoriId INT(11)
+);
+CREATE TABLE TeknologiKategorier (
+	kategoriId INT(11) AUTO_INCREMENT PRIMARY KEY,
+	kategoriNavn VARCHAR(255)
+);
+	 

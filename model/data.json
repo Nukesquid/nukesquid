@@ -4,20 +4,24 @@
   "createCv": [
     {
       "user" : "",
-      "cvIntro" : "",
-      "cvMain" : [],
-      "cvExperience" : [
-        {
+      "mainCv" : {
+        "cvName" : "",
+        "introTxt" : "",
+        "cvTags" : []
+      },
+      "edu" : {
+        "sted" : "",
+        "grad" : ""
+      },
+      "cvExperience" : 
+      {
          "role" : "",
          "client" : "",
-         "time" : {
-           "from" : "",
-           "to" : ""
-         },
+         "from" : "",
+         "to" : "",
          "body" : "",
          "tags" : []
-        }
-        ]
+      }
     } 
   ],
   "updateCV": [
