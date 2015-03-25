@@ -1,19 +1,21 @@
 doctype html
-head
-	title='letNight cvApp'
-	meta(name="viewport" content="width=device-width")
-	meta(charset="UTF-8")
-	meta(name="robots" content="noindex")
-	link(rel='stylesheet', type='text/css', href='/bootstrap/bootstrap.min.css')
-	link(rel='stylesheet', type='text/css', href='/bootstrap/bootstrap-theme.min.css')
-body
-	header(class='sticky top-bar-container')
-		h1 letnight
-		nav(class='top-bar small-12 columns')
-			ul(class='list-inline')
-				li mineCver
-				li andresCver
-				li kompetanseSøk
-				li 
-					a(href='/createcv') lagCv
-				li logut
+html
+  head
+    title letNight cvApp
+    meta(name='viewport', content='width=device-width')
+    meta(charset='UTF-8')
+    meta(name='robots', content='noindex')
+    link(rel='stylesheet', type='text/css', href='/bootstrap/style.css')
+  body
+    header.sticky.top-bar-container
+        //h1.logo
+            a(href='../')
+            img(src='/bootstrap/logo.gif', alt='letnight logo')
+    nav.nav-tabs.nav-brand.navbar.navbar-default
+        ul.list-inline
+          li mineCver
+          li andresCver
+          li kompetanseSøk
+          li
+            a(href='/createcv') lagCv
+          li logut
