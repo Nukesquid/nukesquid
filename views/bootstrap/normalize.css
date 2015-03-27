@@ -73,15 +73,6 @@ html {
  * Remove default margin.
  */
 
-body {
-    background-image: url("netBG.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    margin: 0;
-    text-align: center;
-}
-
 /* ==========================================================================
    Links
    ========================================================================== */

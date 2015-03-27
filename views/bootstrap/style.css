@@ -4,10 +4,34 @@
 @import url("bootstrap-theme.css");
 @import url("bootstrap-theme.min.css");
 
-.logo{
+/* My customize CSS IKKE REPSONSIVT*/
+.top-banner-header {
+    background-image: url("top-banner.png");
     background-repeat: no-repeat;
-    float: left;
+    background-attachment: relative;
+    height: 200px;
+    margin-left: 560px;
+    margin-right: 560px;
+    width: 800px;
+    
 }
+h1{
+    text-align: left;
+    padding-top: 90px;
+    margin: 10px;
+    color: #fff;
+    font-size: 70px;
+}
+.top-banner-textbox{
+    margin-left: 550px;
+    margin-right: 550px;
+}
+.textbox-model{
+    margin: 10px;
+    padding: 25px;
+    text-align: left;
+}
+/* My customize CSS ends here*/
 body, p {
     font-size: 18px;
 }
@@ -38,7 +62,7 @@ fieldset {
 }
 label {
     margin-right: 15px;
-    margin-left: 15px;
+    margin-left 15px;
 }
 .alert{
     text-align: left !important;

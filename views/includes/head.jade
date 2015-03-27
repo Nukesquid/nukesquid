@@ -1,21 +1,32 @@
 doctype html
 html
   head
-    title letNight cvApp
+    title LETNIGHT CV-App
     meta(name='viewport', content='width=device-width')
     meta(charset='UTF-8')
     meta(name='robots', content='noindex')
     link(rel='stylesheet', type='text/css', href='/bootstrap/style.css')
-  body
-    header.sticky.top-bar-container
-        //h1.logo
-            a(href='../')
-            img(src='/bootstrap/logo.gif', alt='letnight logo')
-    nav.nav-tabs.nav-brand.navbar.navbar-default
-        ul.list-inline
-          li mineCver
-          li andresCver
-          li kompetanseSøk
-          li
-            a(href='/createcv') lagCv
-          li logut
+    link(rel='shortcut icon', href='/bootstrap/fanelogo.png')
+    
+  //-------BODY PART--------------------------
+  body({padding-top:70px})
+        nav.navbar-fixed-top.navbar-default.modal-content
+            .container
+                .navbar-header
+                    //letnight logoen som skal settes langs til venstre ved menybaren
+                    a.navbar-brand.navbar-form.navbar-left(href="../")
+                        img(src="../bootstrap/logo.gif")
+                //--------Collect the nav links, forms and other content for toggling-----
+                .collapse.navbar-collapse
+                    ul.nav.nav-tabs.navbar-text.h1.small.navbar-form
+
+                      li 
+                        a(href='#') Min CV
+                      li
+                        a(href='#') Andre CVer
+                      li
+                        a(href='#') Kompetanse Søk
+                      li
+                        a(href='/createcv') Lage CV
+                      li 
+                        a(href='#') Logg ut
