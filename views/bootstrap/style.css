@@ -10,12 +10,12 @@
     background-repeat: no-repeat;
     background-attachment: relative;
     height: 200px;
-    margin-left: 560px;
-    margin-right: 560px;
+    margin-left: 520px;
+    margin-right: 550px;
     width: 800px;
     
 }
-h1{
+.top-banner-header h1{
     text-align: left;
     padding-top: 90px;
     margin: 10px;
@@ -23,14 +23,76 @@ h1{
     font-size: 70px;
 }
 .top-banner-textbox{
-    margin-left: 550px;
+    margin-left: 510px;
     margin-right: 550px;
+    width: 820px;
 }
 .textbox-model{
     margin: 10px;
     padding: 25px;
     text-align: left;
 }
+/*Its for lag cv css*/
+.top-banner-header2 {
+    background-image: url("top-banner2.png");
+    background-repeat: no-repeat;
+    background-attachment: relative;
+    height: 200px;
+    margin-left: 520px;
+    margin-right: 550px;
+    width: 800px;
+}
+.top-banner-header2 h1{
+    text-align: left;
+    padding-top: 90px;
+    margin: 10px;
+    color: #fff;
+    font-size: 70px;
+}
+.textbox-model2{
+    margin-left: 520px;
+    margin-right: 550px;
+    margin-bottom: 60px;
+    margin-top: 10px;
+    padding: 10px;
+    width: 800px;
+}
+/*MAKING SPACE FOR MENYBAREN FOR CV LAGING*/
+.test li{
+    padding-right: 50px;
+    padding-left: 5px;
+    color: #0404B4;
+}
+.listings{
+list-style-type: none;
+}
+/*MAKING BUTTONS FOR MY CV MENY*/
+.btn-default2 {
+  text-shadow: 0 1px 0 #fff;
+  border-color: #ccc;
+  cursor: pointer;
+}
+.btn-default2:hover,
+.btn-default2:focus {
+  background-position: 0 -46px;
+  border-color: #c9c9c9;
+  color: #FE9A2E;
+}
+.btn-default2:active,
+.btn-default2.active {
+  border-color: #c9c9c9;
+}
+
+
+.allLeft{
+    text-align: left;
+}
+.allLeft2{
+    margin-left: 60px;
+}
+
+
+/*MY CUZTOMISE CSS ENDS HERE !!!!!!!!!!!!!!!!!!!!!!*/
 /* My customize CSS ends here*/
 body, p {
     font-size: 18px;

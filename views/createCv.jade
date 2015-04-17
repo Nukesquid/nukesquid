@@ -1,12 +1,16 @@
 //header, menybaren
 include ./includes/head.jade
-menu#createCvMenu
-	ul.list-inline
-		li Forsidetest 
-		li HovedSide
-		li Erfaringer
-#cvAddField
-script(type='text/javascript', src='/scripts/cvCreationMenu.js')
+.top-banner-header2.container
+    h1
+        |LAG CV
+.allLeft.top-banner-textbox.jumbotron.navbar-default.textbox-model2
+    menu#createCvMenu
+        ul.list-inline.h2.navbar-form.test
+            li.btn-default2 CV 
+            li.btn-default2 Utdanning
+            li.btn-default2 Erfaring
+    #cvAddField
+    script(type='text/javascript', src='/scripts/cvCreationMenu.js')
 
 //Footer
 include ./includes/footer.jade
