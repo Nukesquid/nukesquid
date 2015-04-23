@@ -24,34 +24,35 @@
       }
     } 
   ],
-  "updateCV": [
+  "updateCv": [
     {
       "user" : "",
-      "cvIntro" : {
-        "id" : "",
-        "intro": ""
-      },
       "cvMain" : {
         "id" : "",
-        "main" : []
+        "cvName" : "",
+        "introTxt" : "",
+        "cvTags" : []
       },
       "cvExperience": {
         "id" : "",
-        "title" : "",
+        "role" : "",
         "client" : "",
-        "time" : {
-          "from" : "",
-          "to" : ""
-        },
-        "body" : "",
-        "tags" : []
+        "from" : "",
+        "to" : "",
+		"body" : "",
+        "cvTags" : []
+      },
+      "edu" : {
+      	"id" : "",
+        "sted" : "",
+        "grad" : ""
       }
     }
   ],
   "deleteCv" : [
     {
       "user" : "",
-      "cvIntroId" : "",
+      "eduId" : "",
       "cvMainId" : "",
       "cvExperienceId" : ""
     }
@@ -59,7 +60,7 @@
   "assembleCv" : [
     {
       "user" : "",
-      "cvIntroID" : "",
+      "eduId" : "",
       "cvMainId" : "" ,
       "cvExperienceId" : []
     }  
