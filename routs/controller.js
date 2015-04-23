@@ -16,6 +16,20 @@ sql = require('mysql').createConnection({
 });
 
 
+// creates users
+function userInserter(obj){
+	for (i=0;i<obj.length;i++){
+		var iteration = obj[i];
+		if (iteration.fornavn !== '' && iteration.fornavn !== undefined && 
+			iteration.etternavn !== '' && iteration.etternavn !== undefined &&
+			iteration.epost !== '' && iteration.epost !== undefined &&
+			iteration.tlf !== '' && iteration.tlf !== undefined){
+				sql.query('INSERT INTO Brukere SET ?', iteration);
+			}
+	}
+
+}
+
 // connect cvelements
 function connects(obj){
 	for (i=0;i<obj.length;i++){
@@ -103,7 +117,7 @@ function updates(author, obj){
 
 
 // placing new elements into database
-function inserts(author, obj){
+function cvInserts(author, obj){
 	console.log(obj);
 	// iterate through new elements
 	for (i=0;i<obj.length;i++){
@@ -148,7 +162,7 @@ function dataParser(json){
 	console.log('dataParser sayes hi');
 	if (json.author !== '' && json.author !== undefined){
 		if (json.createCv === '[object Array]'){
-			inserts(json.author,json.createCv);
+			cvInserts(json.author,json.createCv);
 		}
 		if (json.updateCv === '[object Array]'){
 			updates(json.author,json.updateCV);
@@ -158,7 +172,7 @@ function dataParser(json){
 		}
 		if (json.assembleCv === '[object Array]'){
 			connects(json.assembleCv);
-		}s
+		}
 	}
 }
 

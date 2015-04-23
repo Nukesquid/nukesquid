@@ -1,6 +1,14 @@
 {
   "author": "",
   "timestamp":"",
+  "createUser" : [
+  	{
+  		"fornavn": "",
+  		"etternavn" : "",
+  		"epost" : "",
+  		"tlf" : ""
+  	}
+  ],
   "createCv": [
     {
       "user" : "",
