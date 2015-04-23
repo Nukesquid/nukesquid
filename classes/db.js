@@ -4,15 +4,14 @@ var dbclass = function(mysql) {
         host : 'localhost',
         user : 'itiv',
         password : 'itiv5',
-        database : 'itiv',
-        debug : true
+        database : 'itiv'
     });
 }
 dbclass.prototype.query = function (queryString, input, cb) {
     this.db.getConnection(function(err, connection) {
         if(err) {
             connection.release();
-            console.log('Problem med å koble til databasen.');
+            console.log('Problem med å koble til databasen: ' + err);
             return;
         }
         connection.query(queryString, input, function(err, rows) {
