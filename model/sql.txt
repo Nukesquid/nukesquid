@@ -32,8 +32,8 @@ CREATE TABLE Cv (
 CREATE TABLE UtdanningLink (
 	utdanningLinkUtdanningId INT(11),
 	utdanningLinkCvId INT(11),
-	PRIMARY KEY(utdanningId, cvId),
-	FOREIGN KEY (utdanningLinkUtdanningId) REFERENSES Utdanning (utdanningId),
+	PRIMARY KEY(utdanningLinkUtdanningId, utdanningLinkCvId),
+	FOREIGN KEY (utdanningLinkUtdanningId) REFERENCES Utdanning (utdanningId),
 	FOREIGN KEY (utdanningLinkCvId) REFERENCES Cv (cvId)
 );
 
