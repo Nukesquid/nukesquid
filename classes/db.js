@@ -6,20 +6,24 @@ var dbclass = function(mysql) {
         password : 'itiv5',
         database : 'itiv'
     });
-}
+};
 dbclass.prototype.query = function (queryString, input, cb) {
     this.db.getConnection(function(err, connection) {
         if(err) {
             connection.release();
             console.log('Problem med å koble til databasen: ' + err);
-            return;
+        } else {
+            connection.query(queryString, input, function(err, rows) {
+                connection.release();
+                if(!err) {
+                    if(typeof cb !== 'undefined') {
+                        cb(rows);
+                    }
+                } else {
+                    console.log('Problem med spørring til databasen: ' + err + ' ' + queryString);
+                }
+            });
         }
-        connection.query(queryString, input, function(err, rows) {
-            connection.release();
-            if(!err) {
-                cb(rows);
-            }
-        });
     });
-}
+};
 module.exports = dbclass;
