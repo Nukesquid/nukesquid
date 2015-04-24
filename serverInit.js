@@ -37,11 +37,13 @@ app.get('/showUsers', function(req, res){
  * 
  */
 
-var db = new db();
+var db = require('mysql');
 var cv = new cv(db);
+
 /*
  * Vise en spesifikk CV
  */
+
 app.get('/api/showCv/:cvId([0-9]+)', function(req, res){
 	cv.showSingleCv(req, res, req.params.cvId);
 });
