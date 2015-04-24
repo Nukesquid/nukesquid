@@ -31,6 +31,8 @@ app.get('/showUsers', function(req, res){
 	res.render('showUsers.jade');
 });
 
+app.use('/createcv', createCv);
+app.use('/controller', controller);
 /*
  *  
  * API-delen 
@@ -42,6 +44,8 @@ var dbClass = require('./classes/db.js');
 var cvModel = require('./model/cvModel.js');
 var db = new dbClass(mysql);
 var cv = new cvModel(db);
+
+
 
 
 /*
