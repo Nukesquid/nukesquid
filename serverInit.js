@@ -25,15 +25,15 @@ app.get('/', function(req, res){
 });
 /* Søk */
 app.get('/search', function(req, res){
-	res.render('search.jade');
+	res.render('search.jade', {scripts: ['scripts/searchCv.js']});
 });
 /* Vis CV */
 app.get('/showCv', function(req, res){
-	res.render('showCv.jade');
+	res.render('showCv.jade', {scripts: ['scripts/showCv.js']});
 });
 /* Vise brukere */
 app.get('/showUsers', function(req, res){
-	res.render('showUsers.jade');
+	res.render('showUsers.jade', {scripts: ['scripts/showUsers.js']});
 });
 
 app.use('/createcv', createCv);
