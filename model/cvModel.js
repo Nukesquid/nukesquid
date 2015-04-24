@@ -99,9 +99,9 @@ cv.prototype.getSingeCvJSON = function(cvId, cb) {
     /* Henter ut hovedinformasjonen for en spesifikk CV */
     this.getSingleCvData(function(rows) {
         super_.jsonOut.intro = rows[0].cvIntroduksjon;
-        super_.jsonOut.brukerFornavn = rows[0].brukerbrukerFornavn;
-        super_.jsonOut.brukerEtternavn = rows[0].brukerbrukerEtternavn;
-        super_.jsonOut.brukerEpost = rows[0].brukerbrukerEpost;
+        super_.jsonOut.brukerFornavn = rows[0].brukerFornavn;
+        super_.jsonOut.brukerEtternavn = rows[0].brukerEtternavn;
+        super_.jsonOut.brukerEpost = rows[0].brukerEpost;
         super_.jsonOut.telefon = rows[0].brukerTeleon;
         super_.jsonOut.utdanning = [];
         super_.jsonOut.referanser = [];
@@ -187,19 +187,19 @@ cv.prototype.removes = function(author, cvObj) {
 		var iteration = cvObj[i];
 		if (iteration.brukerId !== '' && iteration.brukerId !== undefined) {
 			if (iteration.cvId !== '' && iteration.cvId !== undefined) {
-				this.db.query('REMOVE FROM TeknologiLink WHERE teknologiLinkCvId = :cvId', iteration);
-				this.db.query('REMOVE FROM ReferanseLink WHERE referanseLinkCvId = :cvId', iteration);
-				this.db.query('REMOVE FROM UtdanningLink WHERE utdanningLinkCvId = :cvId', iteration);
-				this.db.query('REMOVE FROM Cv WHERE cvID = :cvId AND cvBrukerID = :brukerId', iteration);
+				this.db.query('DELETE FROM TeknologiLink WHERE teknologiLinkCvId = :cvId', iteration);
+				this.db.query('DELETE FROM ReferanseLink WHERE referanseLinkCvId = :cvId', iteration);
+				this.db.query('DELETE FROM UtdanningLink WHERE utdanningLinkCvId = :cvId', iteration);
+				this.db.query('DELETE FROM Cv WHERE cvID = :cvId AND cvBrukerID = :brukerId', iteration);
 			}
 			if (iteration.referanseId !== '' && iteration.referanseId !== undefined) {
-				this.db.query('REMOVE FROM TeknologiLink WHERE TeknologiLinkReferanseId = :referanseId', iteration);
-				this.db.query('REMOVE FROM ReferanseLink WHERE ReferanseLinkReferanseId = :referanseId', iteration);
-				this.db.query('REMOVE FROM Referanser WHERE referanseId = :referanseId AND brukerId = :brukerId', iteration);
+				this.db.query('DELETE FROM TeknologiLink WHERE TeknologiLinkReferanseId = :referanseId', iteration);
+				this.db.query('DELETE FROM ReferanseLink WHERE ReferanseLinkReferanseId = :referanseId', iteration);
+				this.db.query('DELETE FROM Referanser WHERE referanseId = :referanseId AND brukerId = :brukerId', iteration);
 			}
 			if (iteration.utdanningId !== '' && iteration.utdanningId !== undefined) {
-				this.db.query('REMOVE FROM UtdanningLink WHERE utdanningLinkUtdanningId = :utdanningId',iteration);
-				this.db.query('REMOVE FROM Utdanning WHERE utdanningid = :utdanningId AND utdanningBrukerId = :brukerId', iteration);
+				this.db.query('DELETE FROM UtdanningLink WHERE utdanningLinkUtdanningId = :utdanningId',iteration);
+				this.db.query('DELETE FROM Utdanning WHERE utdanningid = :utdanningId AND utdanningBrukerId = :brukerId', iteration);
 			}
 		}
 	}
@@ -214,7 +214,7 @@ cv.prototype.updates = function(author, cvObj) {
 				cvMain.brukerId = iteration.brukerId;
 				this.db.query('UPDATE Cv SET endreatDato = NOW(), cvNavn = :cvName, cvIntroduksjons = :cvIntroduksjon WHERE cvBrukerID = :brukerId AND cvID = :cvId', cvMain);
 				if(cvMain.cvTags !== undefined) {
-					this.db.query('REMOVE FROM TeknologiLink WHERE TeknologiLinkCvId = :cvId', cvMain);
+					this.db.query('DELETE FROM TeknologiLink WHERE TeknologiLinkCvId = :cvId', cvMain);
 					for (var l = 0; l < cvMain.cvTags.length; l++) {
 						this.db.query('INSERT INTO TeknologiLink SET ?', {teknologiLinkCvId : cvMain.cvId, teknologiLinkTeknologiId:cvMain.cvTags[l]});
 					}
@@ -227,7 +227,7 @@ cv.prototype.updates = function(author, cvObj) {
 				cvReferanse.brukerId = iteration.brukerId;
 				this.db.query('UPDATE Referanser SET referanseRolle = :referanseRolle, referanseKundeId = :referanseKundeId, referanseTidFra = :referanseTidFra, referanseTidTil = :referanseTidTil, referanseInformasjon = :referanseInformasjon WHERE referanseBrukerId = :brukerId AND referanseId = :referanseId', cvReferance);
 				if (cvReferance !== undefined){
-					this.db.query('REMOVE FROM TeknologiLink WHERE teknologiId = :id', cvReferance);
+					this.db.query('DELETE FROM TeknologiLink WHERE teknologiId = :id', cvReferance);
 					for(var m = 0; m < cvReferance.cvTags.length; m++) {
 						this.db.query('INSERT INTO TeknologiLink SET ?', {teknologiLinkReferanseId : cvReferance.id, teknologiLinkTeknologiId:cvReferance.cvTags[m]});
 					}
@@ -245,24 +245,29 @@ cv.prototype.updates = function(author, cvObj) {
 };
 /* Legger inn CV i databasen */
 cv.prototype.cvInserts = function(author, cvObj) {
+	var super_ = this;
+	console.log('cvInserts sayes hi');
 	// iterate through new elements
 	for(var i = 0; i < cvObj.length; i++) {
 		this.brukerId = cvObj[i].brukerId;
+		console.log(cvObj[i].mainCv.cvNavn + cvObj[i].mainCv.cvIntroduksjon);
 		if(cvObj[i].mainCv.cvNavn !== '' && cvObj[i].mainCv.cvIntroduksjon !== '' && cvObj[i].mainCv.cvTags.length !== 0) {
 			console.log('CvMain was added');
 			var cvTags = cvObj[i].mainCv.cvTags;
 			this.db.query('INSERT INTO Cv SET ?', {/*createdBy: author,*/
-				brukerId: cvObj[i].brukerId,
+				cvBrukerId: cvObj[i].brukerId,
 				cvIntroduksjon : cvObj[i].mainCv.cvIntroduksjon,
-				cvNavn: cvObj[i].mainCv.cvNavn}, function (err, result) {
+				cvNavn: cvObj[i].mainCv.cvNavn}, function (result) {
 				for (var l = 0; l < cvTags.length; l++) {
-					this.db.query('INSERT INTO TeknologiLink SET ?', {TeknologiLinkCvId: result.insertId, teknologiLinkTeknologiId: cvTags[l]});
+					console.log(result);
+					super_.db.query('INSERT INTO TeknologiLink SET ?', {TeknologiLinkCvId: result.insertId, teknologiLinkTeknologiId: cvTags[l]});
 				}
 			});
+			console.log('cv har kanskje blitt opprettet');
 		}
-		if(cvObj[i].edu.sted !== '' && cvObj[i].edu.grad !== ''){
+		if(cvObj[i].edu.utdanningSted !== '' && cvObj[i].edu.utdanningGrad !== ''){
 			this.db.query('INSERT INTO Utdanning SET ?', {
-				brukerId : this.brukerId,
+				utdanningBrukerId : this.brukerId,
 				utdanningSted : cvObj[i].edu.utdanningSted,
 				utdanningGrad : cvObj[i].edu.utdanningGrad
 			});
@@ -271,15 +276,15 @@ cv.prototype.cvInserts = function(author, cvObj) {
 				cvObj[i].cvExperience.referanseTidTil !== '' && cvObj[i].cvExperience.referanseInformasjon !== '' && cvObj[i].cvExperience.tags.length !== 0){
 			var ExpTags = cvObj[i].cvExperience.tags;
 			this.db.query('INSERT INTO Referanser SET ?', {
-					brukerId : this.brukerId,
+					referanseBrukerId : this.brukerId,
 					referanseInformasjon : cvObj[i].cvExperience.referanseInformasjon,
 					referanseTidFra : cvObj[i].cvExperience.referanseTidFra,
 					referanseTidTil : cvObj[i].cvExperience.referanseTidTil,
 					referanseRolle : cvObj[i].cvExperience.referanseRolle,
 					referanseKundeId : cvObj[i].cvExperience.referanseKundeId
-				}, function (err, result) {
+				}, function (result) {
 					for (var m = 0; m < ExpTags.length; m++) {
-						this.db.query('INSERT INTO TeknologiLink SET ?', {teknologiLinkReferanseId: result.insertId,
+						super_.db.query('INSERT INTO TeknologiLink SET ?', {teknologiLinkReferanseId: result.insertId,
 							teknologiLinkTeknologiId: ExpTags[m]});
 					}
 				}
@@ -296,13 +301,13 @@ cv.prototype.getUserCv = function (userId, callback) {
     this.db.query("SELECT cvId, cvBrukerId cvNavn, cvOpprettetDato, cvEndretDato FROM Cv WHERE ? ORDER BY cvNavn ASC", {cvBrukerId: userId}, callback);
 };
 cv.prototype.getSingleCvData = function(callback) {
-    this.db.query("SELECT cvId, cvIntroduksjon, cvNavn, brukerbrukerFornavn, brukerbrukerEtternavn, brukerbrukerEpost, brukerTelefon FROM Cv INNER JOIN Brukere ON Cv.cvBrukerId = Brukere.brukerId WHERE ?", {cvId: this.cvId}, callback);
+    this.db.query("SELECT cvId, cvIntroduksjon, cvNavn, brukerFornavn, brukerEtternavn, brukerEpost, brukerTelefon FROM Cv INNER JOIN Brukere ON Cv.cvBrukerId = Brukere.brukerId WHERE ?", {cvId: this.cvId}, callback);
 };
 cv.prototype.getUtdanningData = function(callback) {
     this.db.query("SELECT utdanningSted, utdanningGrad, utdanningTid FROM Utdanning INNER JOIN UtdanningLink ON Utdanning.utdanningId = UtdanningLink.utdanningLinkUtdanningId WHERE ?", {utdanningLinkCvId: this.cvId}, callback);
 };
 cv.prototype.getReferanseData = function(callback) {
-    this.db.query("SELECT referanseId, referanseInformasjon, referanseTidFra, referanseTidTil, referanseRolle, kundeNavn FROM Referanser INNER JOIN Kunder ON Referanser.referanseKundeId = Kunder.kundeId INNER JOIN ReferanserLink ON ReferanserLink.referanseLinkReferanseId = Referanser.referanseId WHERE ?", {referanseLinkCvId: this.cvId}, callback);
+    this.db.query("SELECT referanseId, referanseInformasjon, referanseTidFra, referanseTidTil, referanseRolle, kundeNavn FROM Referanser INNER JOIN Kunder ON Referanser.referanseKundeId = Kunder.kundeId INNER JOIN ReferanseLink ON ReferanseLink.referanseLinkReferanseId = Referanser.referanseId WHERE ?", {referanseLinkCvId: this.cvId}, callback);
 };
 cv.prototype.getReferanseTeknologiData = function(inClause, callback) {
     this.db.query("SELECT teknologiNavn, teknologiLinkReferanseId FROM TeknologiLink INNER JOIN Teknologier ON TeknologiLink.teknologiLinkTeknologiId = Teknologier.teknologiId WHERE teknologiLinkReferanseId IN(" + inClause + ")", {}, callback);
@@ -311,13 +316,13 @@ cv.prototype.getTeknologiData = function(callback) {
     this.db.query("SELECT teknologiNavn, teknologiKategoriNavn FROM Teknologier INNER JOIN TeknologiKategorier ON Teknologier.teknologiKategoriId = TeknologiKategorier.teknologiKategoriId INNER JOIN TeknologiLink ON Teknologier.teknologiId = TeknologiLink.teknologiLinkTeknologiId WHERE ?", {teknologiLinkCvId: this.cvId}, callback);
 };
 cv.prototype.getReferanseUserData = function(userId, callback) {
-    this.db.query("SELECT referanseId, referanseInformasjon, referanseTidFra, referanseTidTil, referanseRolle, kundeNavn FROM Referanser INNER JOIN Kunder ON Referanser.referanseKundeId = Kunder.kundeId INNER JOIN ReferanserLink ON ReferanserLink.referanseLinkReferanseId = Referanser.referanseId WHERE ?", {referanseBrukerId: userId}, callback);
+    this.db.query("SELECT referanseId, referanseInformasjon, referanseTidFra, referanseTidTil, referanseRolle, kundeNavn FROM Referanser INNER JOIN Kunder ON Referanser.referanseKundeId = Kunder.kundeId INNER JOIN ReferanseLink ON ReferanseLink.referanseLinkReferanseId = Referanser.referanseId WHERE ?", {referanseBrukerId: userId}, callback);
 };
-cv.prototype.getUtdanningData = function(userId, callback) {
+/*cv.prototype.getUtdanningData = function(userId, callback) {
     this.db.query("SELECT utdanningId, utdanningSted, utdanningGrad, utdanningTid FROM Utdanning WHERE ?", {utdanningBrukerId: userId}, callback);
-};
+};*/
 cv.prototype.getBrukere = function(callback) {
-    this.db.query("SELECT brukerId, brukerbrukerFornavn, brukerbrukerEtternavn, brukerbrukerEpost, brukerTelefon FROM Brukere ORDER BY brukerbrukerEtternavn ASC, brukerbrukerFornavn ASC", {}, callback);
+    this.db.query("SELECT brukerId, brukerFornavn, brukerEtternavn, brukerEpost, brukerTelefon FROM Brukere ORDER BY brukerEtternavn ASC, brukerFornavn ASC", {}, callback);
 };
 cv.prototype.getKunder = function(callback) {
     this.db.query("SELECT kundeId, kundeNavn FROM Kunder ORDER BY kundeNavn ASC", {}, callback);
@@ -325,7 +330,7 @@ cv.prototype.getKunder = function(callback) {
 cv.prototype.searchCVs = function(searchPhrase, callback) {
     var phrase = this.db.escape('%' + searchPhrase + '%');
     this.db.query("SELECT cvId, cvNavn FROM Cv " +
-                  "LEFT JOIN ReferanserLink ON referanseLinkCvId = cvId " +
+                  "LEFT JOIN ReferanseLink ON referanseLinkCvId = cvId " +
                   "LEFT JOIN Referanser ON referanseId = referanseLinkReferanseId " +
                   "LEFT JOIN Kunder ON kundeId = referanseKundeId " +
                   "LEFT JOIN Brukere ON brukerId = cvBrukerId " +
@@ -336,8 +341,8 @@ cv.prototype.searchCVs = function(searchPhrase, callback) {
                   "WHERE cvNavn LIKE " + phrase +
                   " OR teknologiNavn LIKE " + phrase +
                   " OR kundeNavn LIKE " + phrase +
-                  " OR brukerbrukerFornavn LIKE " + phrase +
-                  " OR brukerbrukerEtternavn LIKE " + phrase +
+                  " OR brukerFornavn LIKE " + phrase +
+                  " OR brukerEtternavn LIKE " + phrase +
                   " OR utdanningGrad LIKE " + phrase +
                   " OR kundeNavn LIKE " + phrase +
                   " OR referanseInformasjon LIKE " + phrase +

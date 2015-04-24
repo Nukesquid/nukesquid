@@ -37,11 +37,11 @@ function getTags() {
 	// placeholder until henrik developes serverside api
 	var tempReturnObjs = [{tagId : 1,
 						   tagName : 'JavaScript',
-						   tagCategoryId : 1,
+						   tagCategoryId : 2,
 						   tagCategoryName : 'Utviklingsspråk og rammeverk'},
 						  {tagId : 2,
 						   tagName : 'Pølsevev',
-						   tagCategoryId : '2',
+						   tagCategoryId : '1',
 						   tagCategoryName : 'Spesial skills'}
 						  ];
 	return tempReturnObjs;
@@ -53,8 +53,8 @@ function getTags() {
 var sendJson = JSON.parse('{"author":"","timestamp":"","createUser":[{"brukerFornavn":"","brukerEtternavn":"","brukerEpost":"","brukerTelefon":""}],"createCv":[{"brukerId":"","mainCv":{"cvNavn":"","cvIntroduksjon":"","cvTags":[]},"edu":{"utdanningSted":"","utdanningGrad":""},"cvExperience":{"referanseRolle":"","referanseKundeId":"","referanseTidFra":"","referanseTidTil":"","referanseInformasjon":"","tags":[]}}],"updateCv":[{"brukerId":"","cvMain":{"cvId":"","cvNavn":"","cvIntroduksjon":"","cvTags":[]},"cvExperience":{"referanseId":"","referanseRolle":"","referanseKundeId":"","referanseTidFra":"","referanseTidTil":"","referanseInformasjon":"","cvTags":[]},"edu":{"utdanningId":"","utdanningSted":"","utdanningGrad":""}}],"deleteCv":[{"brukerId":"","utdanningId":"","cvId":"","referanseId":""}],"assembleCv":[{"brukerId":"","utdanningId":[],"cvId":"","referanseId":[]}]}');
 
 // temp vars for development 
-var loginId = 'root';
-var consultant = 'magnus';
+var loginId = '3';
+var consultant = '1';
 
 
 // div for creating cv assets

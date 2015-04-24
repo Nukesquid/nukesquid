@@ -71,9 +71,9 @@ CREATE TABLE Teknologier (
 
 CREATE TABLE TeknologiLink (
 	teknologiLinkTeknologiId INT(11),
-	teknologiLinkCvId INT(11),
-	teknologiLinkReferanseId INT(11),
-	PRIMARY KEY(teknologiLinkTeknologiId, teknologiLinkCvId, teknologiLinkReferanseId),
+	teknologiLinkCvId INT(11) DEFAULT NULL,
+	teknologiLinkReferanseId INT(11) DEFAULT NULL,
+	UNIQUE(teknologiLinkTeknologiId, teknologiLinkCvId, teknologiLinkReferanseId),
 	FOREIGN KEY (teknologiLinkTeknologiId) REFERENCES Teknologier (teknologiId),
 	FOREIGN KEY (teknologiLinkCvId) REFERENCES Cv (cvId),
 	FOREIGN KEY (teknologiLinkReferanseId) REFERENCES Referanser (referanseId)
