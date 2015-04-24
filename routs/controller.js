@@ -7,7 +7,10 @@
 var express = require('express');
 var app = express();
 var bp = require('body-parser');
-// mysql connection
+//var cvModel = require('../model/cvModel');
+//var cv = new cvModel();
+
+/*// mysql connection
 sql = require('mysql').createConnection({
 	host : 'localhost',
 	user : 'root',
@@ -15,7 +18,7 @@ sql = require('mysql').createConnection({
 	database : 'cvApp'
 });
 
-
+/*
 // creates users
 function userInserter(obj){
 	for (i=0;i<obj.length;i++){
@@ -124,7 +127,7 @@ function cvInserts(author, obj){
 		this.user = obj[i].user;
 		if (obj[i].mainCv.cvNavn !== '' && obj[i].mainCv.introTxt !== '' && obj[i].mainCv.cvTags.length !== 0){
 			this.cvTags = obj[i].mainCv.cvTags;
-			sql.query('INSERT INTO Cv SET ?', {/*createdBy: author,*/ 
+			sql.query('INSERT INTO Cv SET ?', {/*createdBy: author,*//* 
 				brukerId: obj[i].user, 
 				cvIntroduksjon : obj[i].mainCv.introTxt, 
 				cvNavn: obj[i].mainCv.cvName}, function (err, result){
@@ -157,21 +160,21 @@ function cvInserts(author, obj){
 		
 	}
 }
-
+*/
 function dataParser(json){
 	console.log('dataParser sayes hi');
-	if (json.author !== '' && json.author !== undefined){
-		if (json.createCv === '[object Array]'){
-			cvInserts(json.author,json.createCv);
+	if (json.author !== '' && typeof json.author !== undefined){
+		if (typeof json.createCv === 'object'){
+			cv.cvInserts(json.author,json.createCv);
 		}
-		if (json.updateCv === '[object Array]'){
-			updates(json.author,json.updateCV);
+		if (typeof json.updateCv === 'object'){
+			cv.updates(json.author,json.updateCV);
 		}
-		if (json.deleteCv === '[object Array]'){
-			removes(json.author,json.deleteCv);
+		if (typeof json.deleteCv === 'object'){
+			cv.removes(json.author,json.deleteCv);
 		}
-		if (json.assembleCv === '[object Array]'){
-			connects(json.assembleCv);
+		if (typeof json.assembleCv === 'object'){
+			cv.connects(json.assembleCv);
 		}
 	}
 }
