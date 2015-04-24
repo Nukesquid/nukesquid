@@ -38,7 +38,11 @@ app.get('/showUsers', function(req, res){
  */
 
 var db = require('mysql');
-var cv = new cv(db);
+var dbClass = require('./classes/db.js');
+var cvModel = require('./model/cvModel.js');
+db = new dbClass(mysql);
+cv = new cvModel(db);
+
 
 /*
  * Vise en spesifikk CV
