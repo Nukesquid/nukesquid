@@ -50,7 +50,7 @@ function getTags() {
 // functions end
 
 // json object expected by server
-var sendJson = JSON.parse('{"author":"","timestamp":"","createCv":[{"user":"","mainCv":{"cvNavn":"","introTxt":"","cvTags":[]},"edu":{"sted":"","grad":""},"cvExperience":{"role":"","client":"","from":"","to":"","body":"","tags":[]}}],"updateCV":[{"user":"","cvIntro":{"id":"","intro":""},"cvMain":{"id":"","main":[]},"cvExperience":{"id":"","title":"","client":"","time":{"from":"","to":""},"body":"","tags":[]}}],"deleteCv":[{"user":"","cvIntroId":"","cvMainId":"","cvExperienceId":""}],"assembleCv":[{"user":"","cvIntroID":"","cvMainId":"","cvExperienceId":[]}]}');
+var sendJson = JSON.parse('{"author":"","timestamp":"","createUser":[{"brukerFornavn":"","brukerEtternavn":"","brukerEpost":"","brukerTelefon":""}],"createCv":[{"brukerId":"","mainCv":{"cvNavn":"","cvIntroduksjon":"","cvTags":[]},"edu":{"utdanningSted":"","utdanningGrad":""},"cvExperience":{"referanseRolle":"","referanseKundeId":"","referanseTidFra":"","referanseTidTil":"","referanseInformasjon":"","tags":[]}}],"updateCv":[{"brukerId":"","cvMain":{"cvId":"","cvNavn":"","cvIntroduksjon":"","cvTags":[]},"cvExperience":{"referanseId":"","referanseRolle":"","referanseKundeId":"","referanseTidFra":"","referanseTidTil":"","referanseInformasjon":"","cvTags":[]},"edu":{"utdanningId":"","utdanningSted":"","utdanningGrad":""}}],"deleteCv":[{"brukerId":"","utdanningId":"","cvId":"","referanseId":""}],"assembleCv":[{"brukerId":"","utdanningId":[],"cvId":"","referanseId":[]}]}');
 
 // temp vars for development 
 var loginId = 'root';
@@ -81,10 +81,10 @@ var hovedSide = {btn:createCvMenu[0],
 						list.appendChild(listElement);
 					}
 					dom.getElementsByTagName('button')[0].addEventListener('click', function(e){
-						sendJson.createCv[0].mainCv.cvName = dom.getElementsByTagName('input')[0].value;
-						sendJson.createCv[0].mainCv.introTxt = dom.getElementsByTagName('textarea')[0].value;
+						sendJson.createCv[0].mainCv.cvNavn = dom.getElementsByTagName('input')[0].value;
+						sendJson.createCv[0].mainCv.cvIntroduksjon = dom.getElementsByTagName('textarea')[0].value;
 						sendJson.author = loginId;
-						sendJson.createCv[0].user = consultant;
+						sendJson.createCv[0].brukerId = consultant;
 						// place tags in json
 						var listElements = list.childNodes;
 						for (i=0;i<listElements.length;i++){
@@ -102,10 +102,10 @@ var utdanning = {btn:createCvMenu[1],
 					// place selected items in sendJson	
 					dom.getElementsByTagName('button')[0].addEventListener('click', function(e){
 						sendJson.author = loginId;
-						sendJson.createCv[0].user = consultant;
+						sendJson.createCv[0].brukerId = consultant;
 						var inputs = dom.getElementsByTagName('input');
-						sendJson.createCv[0].edu.grad = inputs[0].value						
-						sendJson.createCv[0].edu.sted = inputs[1].value;
+						sendJson.createCv[0].edu.utdanningGrad = inputs[0].value						
+						sendJson.createCv[0].edu.utdanningSted = inputs[1].value;
 						postToServer(sendJson);
 					})}};
 var erfaringer = {btn : createCvMenu[2],
@@ -126,12 +126,12 @@ var erfaringer = {btn : createCvMenu[2],
 					dom.getElementsByTagName('button')[0].addEventListener('click', function(e){
 						var inputs = dom.getElementsByTagName('input');
 						sendJson.author = loginId;
-						sendJson.createCv[0].user = consultant;
-						sendJson.createCv[0].cvExperience.role = inputs[0].value;
-						sendJson.createCv[0].cvExperience.client = inputs[1].value;
- 						sendJson.createCv[0].cvExperience.from = inputs[2].value;
-						sendJson.createCv[0].cvExperience.to = inputs[3].value;
-						sendJson.createCv[0].cvExperience.body = dom.getElementsByTagName('textarea')[0].value;
+						sendJson.createCv[0].brukerId = consultant;
+						sendJson.createCv[0].cvExperience.referanseRolle = inputs[0].value;
+						sendJson.createCv[0].cvExperience.referanseKundeId = inputs[1].value;
+ 						sendJson.createCv[0].cvExperience.referanseTidFra = inputs[2].value;
+						sendJson.createCv[0].cvExperience.referanseTidTil = inputs[3].value;
+						sendJson.createCv[0].cvExperience.referanseInformasjon = dom.getElementsByTagName('textarea')[0].value;
 						// add tags
 						var listElements = list.childNodes;
 						for (i=0;i<listElements.length;i++){
