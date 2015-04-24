@@ -26,4 +26,8 @@ dbclass.prototype.query = function (queryString, input, cb) {
         }
     });
 };
+dbclass.prototype.escape = function (escapeString) {
+	return this.db.escape(escapeString);
+};
+
 module.exports = dbclass;
