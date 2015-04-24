@@ -1,61 +1,82 @@
 CREATE TABLE Utdanning (
-	utdanningid INT(11) AUTO_INCREMENT PRIMARY KEY,
-	brukerId INT(11),
+	utdanningId INT(11) AUTO_INCREMENT PRIMARY KEY,
+	utdanningBrukerId INT(11),
 	utdanningSted VARCHAR(255),
 	utdanningGrad VARCHAR(255),
 	utdanningTid VARCHAR(255)
 );
+
 CREATE TABLE Brukere (
 	brukerId INT(11) AUTO_INCREMENT PRIMARY KEY,
-	fornavn VARCHAR(255),
-	etternavn VARCHAR(255),
-	epost VARCHAR(255),
-	tlf VARCHAR(12)
+	brukerFornavn VARCHAR(255),
+	brukerEtternavn VARCHAR(255),
+	brukerEpost VARCHAR(255),
+	brukerTelefon VARCHAR(12)
 );
+
 CREATE TABLE Kunder (
 	kundeId INT(11) AUTO_INCREMENT PRIMARY KEY,
 	kundeNavn VARCHAR(255)
 );
-CREATE TABLE UtdanningLink (
-	utdanningId INT(11),
-	cvId INT(11),
-	PRIMARY KEY(utdanningId, cvId)
-);
+
 CREATE TABLE Cv (
-	cvID INT(11) AUTO_INCREMENT PRIMARY KEY,
-	brukerID INT(11),
+	cvId INT(11) AUTO_INCREMENT PRIMARY KEY,
+	cvBrukerId INT(11),
 	cvIntroduksjon VARCHAR(1000),
-	opprettelsesDato TIMESTAMP,
-	endreatDato TIMESTAMP,
-	cvNavn VARCHAR(255)
+	cvOpprettetDato TIMESTAMP,
+	cvEndretDato TIMESTAMP,
+	cvNavn VARCHAR(255),
+	FOREIGN KEY (cvBrukerId) REFERENCES Brukere (brukerID)
 );
-CREATE TABLE ReferanseLink (
-	referanseId INT (11),
-	cvId int(11),
-	PRIMARY KEY(referanseId, cvId)
+
+CREATE TABLE UtdanningLink (
+	utdanningLinkUtdanningId INT(11),
+	utdanningLinkCvId INT(11),
+	PRIMARY KEY(utdanningLinkUtdanningId, utdanningLinkCvId),
+	FOREIGN KEY (utdanningLinkUtdanningId) REFERENCES Utdanning (utdanningId),
+	FOREIGN KEY (utdanningLinkCvId) REFERENCES Cv (cvId)
 );
+
 CREATE TABLE Referanser (
 	referanseId INT(11) AUTO_INCREMENT PRIMARY KEY,
-	brukerID INT(11),
-	referanseTekst VARCHAR(2000),
-	tidFra DATE,
-	tidTil DATE,
+	referanseBrukerId INT(11),
+	referanseInformasjon VARCHAR(2000),
+	referanseTidFra DATE,
+	referanseTidTil DATE,
 	referanseRolle VARCHAR(255),
-	kundeId INT(11)
+	referanseKundeId INT(11),
+	FOREIGN KEY (referanseBrukerId) REFERENCES Brukere (brukerId),
+	FOREIGN KEY (referanseKundeId)  REFERENCES Kunder (kundeId)
 );
-CREATE TABLE TeknologiLink (
-	teknologiId INT(11),
-	cvId INT(11),
-	referanseId INT(11),
-	PRIMARY KEY(teknologiId, cvId, referanseId)
+
+CREATE TABLE ReferanseLink (
+	referanseLinkReferanseId INT (11),
+	referanseLinkCvId int(11),
+	PRIMARY KEY (referanseLinkReferanseId, referanseLinkCvId),
+	FOREIGN KEY (referanseLinkReferanseId) REFERENCES Referanser (referanseId),
+	FOREIGN KEY (referanseLinkCvId) REFERENCES Cv (cvId)
 );
+
+CREATE TABLE TeknologiKategorier (
+	teknologiKategoriId INT(11) AUTO_INCREMENT PRIMARY KEY,
+	teknologiKategoriNavn VARCHAR(255)
+);
+	
 CREATE TABLE Teknologier (
 	teknologiId INT(11) AUTO_INCREMENT PRIMARY KEY,
 	teknologiNavn VARCHAR(255),
-	kategoriId INT(11)
+	teknologiKategoriId INT(11),
+	FOREIGN KEY (teknologiKategoriId) REFERENCES TeknologiKategorier (teknologiKategoriId)
 );
-CREATE TABLE TeknologiKategorier (
-	kategoriId INT(11) AUTO_INCREMENT PRIMARY KEY,
-	kategoriNavn VARCHAR(255)
+
+CREATE TABLE TeknologiLink (
+	teknologiLinkTeknologiId INT(11),
+	teknologiLinkCvId INT(11),
+	teknologiLinkReferanseId INT(11),
+	PRIMARY KEY(teknologiLinkTeknologiId, teknologiLinkCvId, teknologiLinkReferanseId),
+	FOREIGN KEY (teknologiLinkTeknologiId) REFERENCES Teknologier (teknologiId),
+	FOREIGN KEY (teknologiLinkCvId) REFERENCES Cv (cvId),
+	FOREIGN KEY (teknologiLinkReferanseId) REFERENCES Referanser (referanseId)
 );
-	 
+
+

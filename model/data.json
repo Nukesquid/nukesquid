@@ -3,74 +3,74 @@
   "timestamp":"",
   "createUser" : [
   	{
-  		"fornavn": "",
-  		"etternavn" : "",
-  		"epost" : "",
-  		"tlf" : ""
+  		"brukerFornavn": "",
+  		"brukerEtternavn" : "",
+  		"brukerEpost" : "",
+  		"brukerTelefon" : ""
   	}
   ],
   "createCv": [
     {
-      "user" : "",
+      "brukerId" : "",
       "mainCv" : {
-        "cvName" : "",
-        "introTxt" : "",
+        "cvNavn" : "",
+        "cvIntroduksjon" : "",
         "cvTags" : []
       },
       "edu" : {
-        "sted" : "",
-        "grad" : ""
+        "utdanningSted" : "",
+        "utdanningGrad" : ""
       },
       "cvExperience" : 
       {
-         "role" : "",
-         "client" : "",
-         "from" : "",
-         "to" : "",
-         "body" : "",
+         "referanseRolle" : "",
+         "referanseKundeId" : "",
+         "referanseTidFra" : "",
+         "referanseTidTil" : "",
+         "referanseInformasjon" : "",
          "tags" : []
       }
     } 
   ],
   "updateCv": [
     {
-      "user" : "",
+      "brukerId" : "",
       "cvMain" : {
-        "id" : "",
-        "cvName" : "",
-        "introTxt" : "",
+        "cvId" : "",
+        "cvNavn" : "",
+        "cvIntroduksjon" : "",
         "cvTags" : []
       },
       "cvExperience": {
-        "id" : "",
-        "role" : "",
-        "client" : "",
-        "from" : "",
-        "to" : "",
-		"body" : "",
+        "referanseId" : "",
+        "referanseRolle" : "",
+        "referanseKundeId" : "",
+        "referanseTidFra" : "",
+        "referanseTidTil" : "",
+		"referanseInformasjon" : "",
         "cvTags" : []
       },
       "edu" : {
-      	"id" : "",
-        "sted" : "",
-        "grad" : ""
+      	"utdanningId" : "",
+        "utdanningSted" : "",
+        "utdanningGrad" : ""
       }
     }
   ],
   "deleteCv" : [
     {
-      "user" : "",
-      "eduId" : "",
-      "cvMainId" : "",
-      "cvExperienceId" : ""
+      "brukerId" : "",
+      "utdanningId" : "",
+      "cvId" : "",
+      "referanseId" : ""
     }
   ],
   "assembleCv" : [
     {
-      "user" : "",
-      "eduId" : "",
-      "cvMainId" : "" ,
-      "cvExperienceId" : []
+      "brukerId" : "",
+      "utdanningId" : [],
+      "cvId" : "" ,
+      "referanseId" : []
     }  
   ]
 }
