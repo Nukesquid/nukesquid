@@ -1,17 +1,18 @@
 // the getter of forms
-function getCreateCvElement(formToGet, containerElement, responseHandling){
+function multipurposeGetter(url, callback, containerElement){
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange=function(){
 		if (xmlhttp.readyState==4 && xmlhttp.status==200){
-			containerElement.innerHTML = xmlhttp.responseText;
-			if (typeof responseHandling !== 'undefined'){
-				responseHandling(containerElement);
+			if (typeof containerElement !== 'undefined'){
+				containerElement.innerHTML = xmlhttp.responseText;
+				callback(containerElement);
+			}else {
+				callback(xmlhttp.responseText);
 			}
     	}
 	}	
-	xmlhttp.open('GET', '/createcv/' + formToGet, true);
+	xmlhttp.open('GET', url, true);
 	xmlhttp.send();
-	return xmlhttp.responseText
 }
 // send data to server
 function postToServer(json){
@@ -25,11 +26,29 @@ function postToServer(json){
 var addBtnEvent = function(obj){
 	this.obj = obj;
 	obj.btn.addEventListener('click', function(e){
-		if (currentView != obj.form){
-			currentView = obj.form;
-			getCreateCvElement(obj.form, cvField, obj.responseHandler);
+		if (currentView != obj.url){
+			currentView = obj.url;
+			multipurposeGetter(obj.url, obj.responseHandler, cvField);
 		}
 	});
+}
+
+// get konsulentliste og legg i boks
+function leggKonsulentISelectBox(dom){
+	this.callback = function(req) {
+		this.selectBox = dom.getElementsByTagName('select')[0];
+		this.konsulenter = JSON.parse(req);
+		if(typeof this.konsulenter === 'object'){
+			for (var i=0;i<this.konsulenter.length; i++){
+				this.option = document.createElement('option');
+				this.option.innerHTML = this.konsulenter[i].brukerFornavn + ' ' + this.konsulenter[i].brukerEtternavn;
+				this.option.value = this.konsulenter[i].brukerId;
+				this.selectBox.appendChild(this.option);
+			}
+		}
+	}
+	multipurposeGetter('/api/showusers/', this.callback);
+
 }
 
 // get taglist from server
@@ -66,9 +85,10 @@ var createCvMenu = document.getElementById('createCvMenu');
 var createCvMenu = createCvMenu.getElementsByTagName('li');
 // create introForm
 var hovedSide = {btn:createCvMenu[0], 
-				  form:'main', 
-				  responseHandler : function(dom){ // handles recived dom from ajax call
+				  url:'/createcv/main', 
+				  responseHandler : function(dom){ // callback for ajax
 					//write all tags til list
+					leggKonsulentISelectBox(dom);
 				 	var list = dom.getElementsByTagName('ul')[0];
 					var tags = getTags();
 					for (i=0; i<tags.length;i++){
@@ -84,7 +104,7 @@ var hovedSide = {btn:createCvMenu[0],
 						sendJson.createCv[0].mainCv.cvNavn = dom.getElementsByTagName('input')[0].value;
 						sendJson.createCv[0].mainCv.cvIntroduksjon = dom.getElementsByTagName('textarea')[0].value;
 						sendJson.author = loginId;
-						sendJson.createCv[0].brukerId = consultant;
+						sendJson.createCv[0].brukerId = dom.getElementsByTagName('select')[0].options[dom.getElementsByTagName('select')[0].selectedIndex].value;
 						// place tags in json
 						var listElements = list.childNodes;
 						for (i=0;i<listElements.length;i++){
@@ -97,21 +117,23 @@ var hovedSide = {btn:createCvMenu[0],
 				 })}};
 // WORK IN PROGRESS!!!
 var utdanning = {btn:createCvMenu[1], 
-				 form: 'edu',
+				 url: '/createcv/edu',
 				 responseHandler : function (dom) {
 					// place selected items in sendJson	
+					leggKonsulentISelectBox(dom);
 					dom.getElementsByTagName('button')[0].addEventListener('click', function(e){
 						sendJson.author = loginId;
-						sendJson.createCv[0].brukerId = consultant;
+						sendJson.createCv[0].brukerId = dom.getElementsByTagName('select')[0].options[dom.getElementsByTagName('select')[0].selectedIndex].value;
 						var inputs = dom.getElementsByTagName('input');
 						sendJson.createCv[0].edu.utdanningGrad = inputs[0].value						
 						sendJson.createCv[0].edu.utdanningSted = inputs[1].value;
 						postToServer(sendJson);
 					})}};
 var erfaringer = {btn : createCvMenu[2],
-				  form : 'experiences',
+				  url : '/createcv/experiences',
 				  responseHandler : function(dom) {
-					//write all tags til list
+					//write all tags to list
+					leggKonsulentISelectBox(dom);
 				 	var list = dom.getElementsByTagName('ul')[0];
 					var tags = getTags();
 					for (i=0; i<tags.length;i++){
@@ -126,7 +148,7 @@ var erfaringer = {btn : createCvMenu[2],
 					dom.getElementsByTagName('button')[0].addEventListener('click', function(e){
 						var inputs = dom.getElementsByTagName('input');
 						sendJson.author = loginId;
-						sendJson.createCv[0].brukerId = consultant;
+						sendJson.createCv[0].brukerId = dom.getElementsByTagName('select')[0].options[dom.getElementsByTagName('select')[0].selectedIndex].value;
 						sendJson.createCv[0].cvExperience.referanseRolle = inputs[0].value;
 						sendJson.createCv[0].cvExperience.referanseKundeId = inputs[1].value;
  						sendJson.createCv[0].cvExperience.referanseTidFra = inputs[2].value;
