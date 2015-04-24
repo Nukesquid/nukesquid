@@ -2,6 +2,11 @@ var express = require('express');
 var session = require('cookie-session');
 var jade = require('jade');
 var app = express();
+var mysql = require('mysql');
+var dbClass = require('./classes/db.js');
+var cvModel = require('./model/cvModel.js');
+var db = new dbClass(mysql);
+var cv = new cvModel(db);
 
 // require subapps
 var cvAppRoot = './routs/cvTools/';
@@ -38,12 +43,6 @@ app.use('/controller', controller);
  * API-delen 
  * 
  */
-
-var mysql = require('mysql');
-var dbClass = require('./classes/db.js');
-var cvModel = require('./model/cvModel.js');
-var db = new dbClass(mysql);
-var cv = new cvModel(db);
 
 
 
