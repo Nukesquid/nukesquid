@@ -6,7 +6,7 @@ var mysql = require('mysql');
 var dbClass = require('./classes/db.js');
 var cvModel = require('./model/cvModel.js');
 var db = new dbClass(mysql);
-var cv = new cvModel(db);
+GLOBAL.cv = new cvModel(db);
 
 // require subapps
 var cvAppRoot = './routs/cvTools/';
