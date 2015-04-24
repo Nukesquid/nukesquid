@@ -134,10 +134,12 @@ cv.prototype.getSingeCvJSON = function(cvId, cb) {
                     inClause += (j === cvTeknologiData.length -1) ? '' : ',';
                 }
                 super_.getReferanseTeknologiData(inClause, function (rows) {
+                	if(rows !== 'undefined') {
                         for(var i = 0; i < rows.length; i++) {
                             super_.jsonOut.referanser[rows[i].teknologiLinkReferanseId].teknologier.push({
                             navn: rows[i].teknologiNavn
                         });
+                        }
                     }
                     super_.getTeknologiData(function(rows) {
                         for(var i = 0; i < rows.length; i++) {
