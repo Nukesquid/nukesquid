@@ -310,7 +310,11 @@ cv.prototype.getReferanseData = function(callback) {
     this.db.query("SELECT referanseId, referanseInformasjon, referanseTidFra, referanseTidTil, referanseRolle, kundeNavn FROM Referanser INNER JOIN Kunder ON Referanser.referanseKundeId = Kunder.kundeId INNER JOIN ReferanseLink ON ReferanseLink.referanseLinkReferanseId = Referanser.referanseId WHERE ?", {referanseLinkCvId: this.cvId}, callback);
 };
 cv.prototype.getReferanseTeknologiData = function(inClause, callback) {
-    this.db.query("SELECT teknologiNavn, teknologiLinkReferanseId FROM TeknologiLink INNER JOIN Teknologier ON TeknologiLink.teknologiLinkTeknologiId = Teknologier.teknologiId WHERE teknologiLinkReferanseId IN(" + inClause + ")", {}, callback);
+	if(inClause != '') {
+	    this.db.query("SELECT teknologiNavn, teknologiLinkReferanseId FROM TeknologiLink INNER JOIN Teknologier ON TeknologiLink.teknologiLinkTeknologiId = Teknologier.teknologiId WHERE teknologiLinkReferanseId IN(" + inClause + ")", {}, callback);
+	} else {
+		callback();
+	}
 };
 cv.prototype.getTeknologiData = function(callback) {
     this.db.query("SELECT teknologiNavn, teknologiKategoriNavn FROM Teknologier INNER JOIN TeknologiKategorier ON Teknologier.teknologiKategoriId = TeknologiKategorier.teknologiKategoriId INNER JOIN TeknologiLink ON Teknologier.teknologiId = TeknologiLink.teknologiLinkTeknologiId WHERE ?", {teknologiLinkCvId: this.cvId}, callback);
