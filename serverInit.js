@@ -37,11 +37,11 @@ app.get('/showUsers', function(req, res){
  * 
  */
 
-var db = require('mysql');
+var mysql = require('mysql');
 var dbClass = require('./classes/db.js');
 var cvModel = require('./model/cvModel.js');
-db = new dbClass(mysql);
-cv = new cvModel(db);
+var db = new dbClass(mysql);
+var cv = new cvModel(db);
 
 
 /*
