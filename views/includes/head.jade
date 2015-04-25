@@ -5,8 +5,9 @@ html
     meta(name='viewport', content='width=device-width')
     meta(charset='UTF-8')
     meta(name='robots', content='noindex')
-    each script in scripts
-    script(src=script)
+    if typeof scripts !== 'undefined'
+        each script in scripts
+            script(src=script)
     link(rel='stylesheet', type='text/css', href='/bootstrap/style.css')
     link(rel='shortcut icon', href='/bootstrap/fanelogo.png')
     
