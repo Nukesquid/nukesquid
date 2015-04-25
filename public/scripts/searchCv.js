@@ -1,21 +1,21 @@
-document.onDOMContentLoaded = function () {
-	document.getElementById('searchSubmit').addEventListener(function () {
-		var xml = new xmlHTTPRequest();
+document.addEventListener('DOMContentLoaded', function () {
+	document.getElementById('searchSubmit').addEventListener('click', function (e) {
+		var xml = new XMLHttpRequest();
 		xml.onreadystatechange = function () {
 			if(xml.readyState === 1) {
-				document.getElementById('searchSubmit').value = "Søker";
+				document.getElementById('searchSubmit').value = "SÃ¸ker";
 				document.getElementById('searchSubmit').disabled = true;
 			} else if(xml.readyState === 4 && xml.status === 200) {
 				var result = JSON.parse(xml.responseText);
 				parseSearch(result);
-				document.getElementById('searchSubmit').value = "Søk";
+				document.getElementById('searchSubmit').value = "SÃ¸k";
 				document.getElementById('searchSubmit').disabled = false;
 			}
 		}
 		xml.open('GET', '/api/search/' + document.getElementById('searchPhrase'), true);
 		xml.send();
 	});	
-}
+});
 function parseSearch(data) {
 	var searchResults = document.getElementById('searchResults');
 	searchResults.innerHTML = '';

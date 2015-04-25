@@ -99,6 +99,7 @@ cv.prototype.getSingeCvJSON = function(cvId, cb) {
     /* Henter ut hovedinformasjonen for en spesifikk CV */
     this.getSingleCvData(function(rows) {
         super_.jsonOut.intro = rows[0].cvIntroduksjon;
+        super_.jsonOut.cvNavn = rows[0].cvNavn;
         super_.jsonOut.brukerFornavn = rows[0].brukerFornavn;
         super_.jsonOut.brukerEtternavn = rows[0].brukerEtternavn;
         super_.jsonOut.brukerEpost = rows[0].brukerEpost;
@@ -300,7 +301,7 @@ cv.prototype.getTeknologier = function (callback) {
     this.db.query("SELECT teknologiId, teknologiNavn, teknologiKategoriNavn FROM Teknologier INNER JOIN TeknologiKategorier ON TeknologiKategorier.teknologiKategoriId = Teknologier.teknologiKategoriId ORDER BY teknologiKategoriNavn ASC", {}, callback);
 };
 cv.prototype.getUserCv = function (userId, callback) {
-    this.db.query("SELECT cvId, cvBrukerId cvNavn, cvOpprettetDato, cvEndretDato FROM Cv WHERE ? ORDER BY cvNavn ASC", {cvBrukerId: userId}, callback);
+    this.db.query("SELECT cvId, cvBrukerId, cvNavn, cvOpprettetDato, cvEndretDato FROM Cv WHERE ? ORDER BY cvNavn ASC", {cvBrukerId: userId}, callback);
 };
 cv.prototype.getSingleCvData = function(callback) {
     this.db.query("SELECT cvId, cvIntroduksjon, cvNavn, brukerFornavn, brukerEtternavn, brukerEpost, brukerTelefon FROM Cv INNER JOIN Brukere ON Cv.cvBrukerId = Brukere.brukerId WHERE ?", {cvId: this.cvId}, callback);

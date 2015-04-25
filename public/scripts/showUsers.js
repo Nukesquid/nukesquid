@@ -1,5 +1,5 @@
-document.onDOMContentLoaded = function () {
-	var xml = new xmlHTTPRequest();
+document.addEventListener('DOMContentLoaded', function () {
+	var xml = new XMLHttpRequest();
 	xml.onreadystatechange = function () {
 		if(xml.readyState === 4 && xml.status === 200) {
 			var result = JSON.parse(xml.responseText);
@@ -8,7 +8,7 @@ document.onDOMContentLoaded = function () {
 	}
 	xml.open('GET', '/api/showUsers/', true);
 	xml.send();
-}
+});
 function parseUsers(data) {
 	var users = document.getElementById('users');
 	users.innerHTML = '';
@@ -16,8 +16,10 @@ function parseUsers(data) {
 		for(var i in data) {
 			var newP = document.createElement('p');
 			var newA = document.createElement('a');
-			newA.setAttribute('href', 'api/showUsersCv/' + data[i].brukerId);
-			newA.addEventListener('click', showUserCvs);
+			newA.setAttribute('href', '/api/showUsersCv/' + data[i].brukerId);
+			newA.addEventListener('click', function (e) {
+				showUserCvs('api/showUsersCv/' + data[i].brukerId, e);
+			});
 			var newAText = document.createTextNode(data[i].brukerEtternavn + ', ' + data[i].brukerFornavn);
 			newA.appendChild(newAText);
 			newP.appendChild(newA);
@@ -27,16 +29,17 @@ function parseUsers(data) {
 		users.innerHTML = 'Ingen brukere';
 	}
 }
-function showUserCvs() {
-	var xml = new xmlHTTPRequest();
+function showUserCvs(href, e) {
+	var xml = new XMLHttpRequest();
 	xml.onreadystatechange = function () {
 		if(xml.readyState === 4 && xml.status === 200) {
 			var result = JSON.parse(xml.responseText);
-			parseUsersCvs(result);
+			parseUserCvs(result);
 		}
 	}
-	xml.open('GET', this.href, true);
+	xml.open('GET', href, true);
 	xml.send();
+	e.preventDefault();
 }
 function parseUserCvs(data) {
 	var userCvs = document.getElementById('userResults');
@@ -45,7 +48,7 @@ function parseUserCvs(data) {
 		for(var i in data) {
 			var newP = document.createElement('p');
 			var newA = document.createElement('a');
-			newA.setAttribute('href', 'api/showCv/' + data[i].cvId);
+			newA.setAttribute('href', '/showCv/' + data[i].cvId);
 			var newAText = document.createTextNode(data[i].cvNavn);
 			newA.appendChild(newAText);
 			newP.appendChild(newA);

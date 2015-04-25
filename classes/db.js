@@ -4,7 +4,8 @@ var dbclass = function(mysql) {
         host : 'localhost',
         user : 'itiv',
         password : 'itiv5',
-        database : 'itiv'
+        database : 'itiv',
+        debug : true
     });
 };
 dbclass.prototype.query = function (queryString, input, cb) {
