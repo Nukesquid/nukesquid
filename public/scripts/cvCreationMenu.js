@@ -34,7 +34,7 @@ var addBtnEvent = function(obj){
 }
 
 // get konsulentliste og legg i boks
-function leggKonsulentISelectBox(dom){
+function leggKonsulentISelectBox(dom, callback){
 	this.callback = function(req) {
 		this.selectBox = dom.getElementsByTagName('select')[0];
 		this.konsulenter = JSON.parse(req);
@@ -129,6 +129,7 @@ var utdanning = {btn:createCvMenu[1],
 						sendJson.createCv[0].edu.utdanningSted = inputs[1].value;
 						postToServer(sendJson);
 					})}};
+					
 var erfaringer = {btn : createCvMenu[2],
 				  url : '/createcv/experiences',
 				  responseHandler : function(dom) {
@@ -165,11 +166,73 @@ var erfaringer = {btn : createCvMenu[2],
 						console.log(sendJson);
 						postToServer(sendJson);
 					})}};
+					
+var cvLink = {
+			 	btn : createCvMenu[3],
+			 	url : '/createcv/cvLink',
+			 	responseHandler : function(dom) {
+			 		var konsulent = dom.getElementsByTagName('select')[0];
+			 		konsulent.addEventListener('change', function(){
+			// get Users cv and place them in the cv select
+			 			multipurposeGetter('/api/showuserscv/'+konsulent.options[konsulent.selectedIndex].value, function(req){
+			 				this.cvSelect = document.getElementsByTagName('select')[1];
+			 				this.cver = JSON.parse(req);
+			 				for (var i=0;i<cver.length;i++){
+			 					this.option = document.createElement('option');
+			 					this.option.innerHTML = cver[i].cvNavn;
+			 					this.option.value = cver[i].cvId;
+			 					this.cvSelect.appendChild(this.option);
+			 				}
+			 			});
+			// get users education and place them in ul
+			 			multipurposeGetter('/api/showutdanning/'+konsulent.options[konsulent.selectedIndex].value, function(req){
+			 				this.eduList = document.getElementById('eduList');
+			 				this.edu = JSON.parse(req);
+			 				for (var i=0;i<this.edu.length;i++){
+			 					this.listItem = document.createElement('li');
+			 					this.checkbox = document.createElement('input');
+			 					this.checkbox.type = 'checkbox';
+			 					this.checkbox.value = this.edu[i].utdanningId;
+			 					this.listItem.appendChild(this.checkbox);
+			 					this.listItem.innerHTML += this.edu[i].utdanningGrad + " " + this.edu[i].utdanningSted;
+			 					this.option.value = this.edu[i].cvId;
+			 					this.eduList.appendChild(this.listItem);
+			 					
+			 				}
+			 			});
+			//t get users referanser and put them in ul
+						multipurposeGetter('/api/utdanning/'+konsulent.options[konsulent.selectedIndex].value, function(req){
+			 				this.refList = document.getElementById('refList');
+			 				this.ref = JSON.parse(req);
+			 				for (var i=0;i<edu.length;i++){
+			 					this.listItem = document.createElement('li');
+			 					this.checkbox = document.createElement('input');
+			 					this.checkbox.type = 'checkbox';
+			 					this.checkbox.value = this.ref[i].referanseId;
+			 					this.listItem.appendChild(this.checkbox);
+			 					this.listItem.innerHTML += this.ref[i].referanse + " " + this.ref[i].utdanningSted;
+			 					this.option.value = edu[i].cvId;
+			 					this.eduList.appendChild(this.listItem);
+			 					
+			 				}
+			 			});
+			 			
+					});
+			 		leggKonsulentISelectBox(dom);
+			 		this.cvSelect = document.createElement('select');
+			 		this.cvSelect 
+			 			
+			 		
+			 		
+			 	}
+			 }
+
 
 // createCvmenu functionality
 addBtnEvent(hovedSide);
 addBtnEvent(utdanning);
 addBtnEvent(erfaringer);
+addBtnEvent(cvLink);
 
 /*
 *	form stuff
