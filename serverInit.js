@@ -35,7 +35,10 @@ app.get('/showCv/([0-9]+)', function(req, res){
 app.get('/showUsers', function(req, res){
 	res.render('showUsers.jade', {scripts: ['/scripts/showUsers.js']});
 });
-
+/* BrukerListe for cvKatalog*/
+app.get('/users', function(req, res){
+	res.render('brukerliste.jade');
+});
 app.use('/createcv', createCv);
 app.use('/controller', controller);
 /*

@@ -185,7 +185,7 @@ var cvLink = {
 			 				}
 			 			});
 			// get users education and place them in ul
-			 			multipurposeGetter('/api/showutdanning/'+konsulent.options[konsulent.selectedIndex].value, function(req){
+			 			multipurposeGetter('/api/utdanning/'+konsulent.options[konsulent.selectedIndex].value, function(req){
 			 				this.eduList = document.getElementById('eduList');
 			 				this.edu = JSON.parse(req);
 			 				for (var i=0;i<this.edu.length;i++){
@@ -200,8 +200,8 @@ var cvLink = {
 			 					
 			 				}
 			 			});
-			//t get users referanser and put them in ul
-						multipurposeGetter('/api/utdanning/'+konsulent.options[konsulent.selectedIndex].value, function(req){
+			// get users referanser and put them in ul
+						multipurposeGetter('/api/referanser/'+konsulent.options[konsulent.selectedIndex].value, function(req){
 			 				this.refList = document.getElementById('refList');
 			 				this.ref = JSON.parse(req);
 			 				for (var i=0;i<edu.length;i++){
@@ -210,7 +210,7 @@ var cvLink = {
 			 					this.checkbox.type = 'checkbox';
 			 					this.checkbox.value = this.ref[i].referanseId;
 			 					this.listItem.appendChild(this.checkbox);
-			 					this.listItem.innerHTML += this.ref[i].referanse + " " + this.ref[i].utdanningSted;
+			 					this.listItem.innerHTML += this.ref[i].referanseKunde + " " + this.ref[i].utdanningSted;
 			 					this.option.value = edu[i].cvId;
 			 					this.eduList.appendChild(this.listItem);
 			 					
@@ -220,12 +220,12 @@ var cvLink = {
 					});
 			 		leggKonsulentISelectBox(dom);
 			 		this.cvSelect = document.createElement('select');
-			 		this.cvSelect 
+			 		//this.cvSelect 
 			 			
 			 		
 			 		
 			 	}
-			 }
+			 };
 
 
 // createCvmenu functionality
@@ -233,10 +233,5 @@ addBtnEvent(hovedSide);
 addBtnEvent(utdanning);
 addBtnEvent(erfaringer);
 addBtnEvent(cvLink);
-
-/*
-*	form stuff
-*/
-
 
 
