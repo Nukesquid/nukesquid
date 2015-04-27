@@ -24,10 +24,10 @@ function parseUsers(data) {
 			newAEtternavn.setAttribute('href', '/api/showUsersCv/' + data[i].brukerId);
 			newAFornavn.setAttribute('href', '/api/showUsersCv/' + data[i].brukerId);
 			newAEtternavn.addEventListener('click', function (e) {
-				showUserCvs('api/showUsersCv/' + data[i].brukerId, e);
+				showUserCvs(this.href, e);
 			});
 			newAFornavn.addEventListener('click', function (e) {
-				showUserCvs('api/showUsersCv/' + data[i].brukerId, e);
+				showUserCvs(this.href, e);
 			});
 			var newAEtternavnText = document.createTextNode(data[i].brukerEtternavn);
 			var newAFornavnText = document.createTextNode(data[i].brukerFornavn);

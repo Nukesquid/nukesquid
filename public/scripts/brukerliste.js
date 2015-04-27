@@ -20,7 +20,7 @@ function multipurposeGetter(url, callback, containerElement){
 var userTable = document.getElementsByTagName('table')[0];
 multipurposeGetter('/api/showusers', function(req){
 	this.users = JSON.parse(req);
-	for (var i = 0;i<this.users.length;i++){
+	for(var i = 0;i<this.users.length;i++) {
 		this.tr = document.createElement('tr');
 		for (this.element in this.users[i]){
 			this.td = document.createElement('td');
