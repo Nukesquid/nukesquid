@@ -33,7 +33,7 @@ cv.prototype.returnUserCv = function(userId, callback) {
 };
 /* Henter ut all utdanning en spesifikk bruker har registrert på seg */
 cv.prototype.showUtdanning = function(req, res, userId) {
-    this.getUtdanningData(userId, function (rows) {
+    this.getUserUtdanningData(userId, function (rows) {
         res.json(rows);
     });
 };
@@ -307,14 +307,14 @@ cv.prototype.getTeknologier = function (callback) {
     this.db.query("SELECT teknologiId, teknologiNavn, teknologiKategoriNavn FROM Teknologier INNER JOIN TeknologiKategorier ON TeknologiKategorier.teknologiKategoriId = Teknologier.teknologiKategoriId ORDER BY teknologiKategoriNavn ASC", {}, callback);
 };
 cv.prototype.getUserCv = function (userId, callback) {
-    this.db.query("SELECT cvId, cvBrukerId, cvNavn, cvOpprettetDato, cvEndretDato FROM Cv WHERE ? ORDER BY cvNavn ASC", {cvBrukerId: userId}, callback);
+    this.db.query("SELECT cvId, cvBrukerId, cvNavn, DATE_FORMAT(cvOpprettetDato, '%d.%m.%Y %H:%i') cvOpprettetDato, DATE_FORMAT(cvEndretDato, '%d.%m.%Y %H:%i') cvEndretDato FROM Cv WHERE ? ORDER BY cvNavn ASC", {cvBrukerId: userId}, callback);
 };
 cv.prototype.getSingleCvData = function(callback) {
     this.db.query("SELECT cvId, cvIntroduksjon, cvNavn, brukerFornavn, brukerEtternavn, brukerEpost, brukerTelefon FROM Cv INNER JOIN Brukere ON Cv.cvBrukerId = Brukere.brukerId WHERE ?", {cvId: this.cvId}, callback);
 };
-/*cv.prototype.getUtdanningData = function(callback) {
+cv.prototype.getUtdanningData = function(callback) {
     this.db.query("SELECT utdanningSted, utdanningGrad, utdanningTid FROM Utdanning INNER JOIN UtdanningLink ON Utdanning.utdanningId = UtdanningLink.utdanningLinkUtdanningId WHERE ?", {utdanningLinkCvId: this.cvId}, callback);
-};*/
+};
 cv.prototype.getReferanseData = function(callback) {
     this.db.query("SELECT referanseId, referanseInformasjon, referanseTidFra, referanseTidTil, referanseRolle, kundeNavn FROM Referanser INNER JOIN Kunder ON Referanser.referanseKundeId = Kunder.kundeId INNER JOIN ReferanseLink ON ReferanseLink.referanseLinkReferanseId = Referanser.referanseId WHERE ?", {referanseLinkCvId: this.cvId}, callback);
 };
@@ -331,7 +331,7 @@ cv.prototype.getTeknologiData = function(callback) {
 cv.prototype.getReferanseUserData = function(userId, callback) {
     this.db.query("SELECT referanseId, referanseInformasjon, referanseTidFra, referanseTidTil, referanseRolle, kundeNavn FROM Referanser INNER JOIN Kunder ON Referanser.referanseKundeId = Kunder.kundeId INNER JOIN ReferanseLink ON ReferanseLink.referanseLinkReferanseId = Referanser.referanseId WHERE ?", {referanseBrukerId: userId}, callback);
 };
-cv.prototype.getUtdanningData = function(userId, callback) {
+cv.prototype.getUserUtdanningData = function(userId, callback) {
     this.db.query("SELECT utdanningId, utdanningSted, utdanningGrad, utdanningTid FROM Utdanning WHERE ?", {utdanningBrukerId: userId}, callback);
 };
 cv.prototype.getBrukere = function(callback) {
@@ -342,7 +342,7 @@ cv.prototype.getKunder = function(callback) {
 };
 cv.prototype.searchCVs = function(searchPhrase, callback) {
     var phrase = this.db.escape('%' + searchPhrase + '%');
-    this.db.query("SELECT cvId, cvNavn FROM Cv " +
+    this.db.query("SELECT cvId, cvNavn, brukerFornavn, brukerEtternavn, DATE_FORMAT(cvEndretDato, '%d.%m.%Y %H:%i') cvEndretDato FROM Cv " +
                   "LEFT JOIN ReferanseLink ON referanseLinkCvId = cvId " +
                   "LEFT JOIN Referanser ON referanseId = referanseLinkReferanseId " +
                   "LEFT JOIN Kunder ON kundeId = referanseKundeId " +

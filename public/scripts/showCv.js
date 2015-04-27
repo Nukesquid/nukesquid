@@ -6,7 +6,10 @@ document.addEventListener('DOMContentLoaded', function () {
 			parseCv(result);
 		}
 	}
-	xml.open('GET', '/api/showCv/1', true);
+	var url = window.location.href;
+	var cvIdArr = url.split('/');
+	var cvId = cvIdArr[cvIdArr.length-1];
+	xml.open('GET', '/api/showCv/' + cvId, true);
 	xml.send();
 });
 function parseCv(cv) {
@@ -18,7 +21,7 @@ function parseCv(cv) {
 	var references = document.getElementById('references');
 	userName.innerHTML = cv.brukerFornavn + ' ' + cv.brukerEtternavn;
 	cvTitle.innerHTML = cv.cvNavn;
-	cvIntroduction = cv.intro;
+	cvIntroduction.innerHTML = cv.intro;
 	var technologyCat = null;
 	for(var i in cv.teknologier) {
 		if(technologyCat != cv.teknologier[i].kategoriNavn) {

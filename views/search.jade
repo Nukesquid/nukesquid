@@ -1,6 +1,7 @@
 include ./includes/head.jade
-p#search
-	input(type="text" id="searchPhrase" placeholder="Skriv inn søkeord")
-	input(type="submit" id="searchSubmit" value="Søk")
+form#searchForm
+	p#search.panel.table-bordered.textbox-model2(style="border: solid 1px #000;")
+		input(type="text" id="searchPhrase" placeholder="Skriv inn søkeord")
+		input(type="submit" id="searchSubmit" value="Søk")
 div#searchResults
 include ./includes/footer.jade

@@ -91,7 +91,7 @@ var hovedSide = {btn:createCvMenu[0],
 					leggKonsulentISelectBox(dom);
 				 	var list = dom.getElementsByTagName('ul')[0];
 					var tags = getTags();
-					for (i=0; i<tags.length;i++){
+					for (var i=0; i<tags.length;i++){
 						var listElement = document.createElement('li');
 						var checkbox = document.createElement('input');
 						checkbox.type = 'checkbox';
@@ -194,7 +194,7 @@ var cvLink = {
 			 					this.checkbox.type = 'checkbox';
 			 					this.checkbox.value = this.edu[i].utdanningId;
 			 					this.listItem.appendChild(this.checkbox);
-			 					this.listItem.innerHTML += this.edu[i].utdanningGrad + " " + this.edu[i].utdanningSted;
+			 					this.listItem.innerHTML += this.edu[i].utdanningGrad + ", " + this.edu[i].utdanningSted;
 			 					this.option.value = this.edu[i].cvId;
 			 					this.eduList.appendChild(this.listItem);
 			 					
@@ -204,16 +204,17 @@ var cvLink = {
 						multipurposeGetter('/api/referanser/'+konsulent.options[konsulent.selectedIndex].value, function(req){
 			 				this.refList = document.getElementById('refList');
 			 				this.ref = JSON.parse(req);
-			 				for (var i=0;i<edu.length;i++){
-			 					this.listItem = document.createElement('li');
-			 					this.checkbox = document.createElement('input');
-			 					this.checkbox.type = 'checkbox';
-			 					this.checkbox.value = this.ref[i].referanseId;
-			 					this.listItem.appendChild(this.checkbox);
-			 					this.listItem.innerHTML += this.ref[i].referanseKunde + " " + this.ref[i].utdanningSted;
-			 					this.option.value = edu[i].cvId;
-			 					this.eduList.appendChild(this.listItem);
-			 					
+			 				for (i in this.ref){
+			 					if(this.ref[i] != null) {
+				 					this.listItem = document.createElement('li');
+				 					this.checkbox = document.createElement('input');
+				 					this.checkbox.type = 'checkbox';
+				 					this.checkbox.value = this.ref[i].referanseId;
+				 					this.listItem.appendChild(this.checkbox);
+				 					this.listItem.innerHTML += this.ref[i].navn + " - " + this.ref[i].rolle;
+				 					this.option.value = this.ref[i].cvId;
+				 					this.refList.appendChild(this.listItem);
+			 					}
 			 				}
 			 			});
 			 			
