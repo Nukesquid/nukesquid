@@ -73,11 +73,14 @@ cv.prototype.showReferanser = function(req, res, userId) {
             inClause += (j === referanseTeknologiData.length -1) ? '' : ',';
         }
         super_.getReferanseTeknologiData(inClause, function (rows) {
-            for(var i = 0; i < rows.length; i++) {
-                super_.jsonOut[rows[i].teknologiLinkReferanseId].teknologier.push({
-                    navn: rows[i].teknologiNavn
-                });
-            }
+        	if(typeof rows != 'undefined') {
+	            for(var i = 0; i < rows.length; i++) {
+	                super_.jsonOut[rows[i].teknologiLinkReferanseId].teknologier.push({
+	                    navn: rows[i].teknologiNavn
+	                });
+	            }
+	        }
+	            
             res.json(super_.jsonOut);
         });
     });
