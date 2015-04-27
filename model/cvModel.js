@@ -25,6 +25,12 @@ cv.prototype.showUserCv = function(req, res, userId) {
         res.json(rows);
     });
 };
+/* Returnerer alle CVene som hører til en spesifikk person basert på brukerId til personen */
+cv.prototype.returnUserCv = function(userId, callback) {
+    this.getUserCv(userId, function (rows) {
+        calback(rows);
+    });
+};
 /* Henter ut all utdanning en spesifikk bruker har registrert på seg */
 cv.prototype.showUtdanning = function(req, res, userId) {
     this.getUtdanningData(userId, function (rows) {

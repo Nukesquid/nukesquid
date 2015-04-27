@@ -22,11 +22,10 @@ multipurposeGetter('/api/showusers', function(req){
 	this.users = JSON.parse(req);
 	for (var i = 0;i<this.users.length;i++){
 		this.tr = document.createElement('tr');
-		this.link = document.createElement('a');
-		this.link.href = '#';
 		for (this.element in this.users[i]){
 			this.td = document.createElement('td');
 			this.a = document.createElement('a');
+			this.a.href = '/cvliste/'+this.users[i].brukerId;
 			this.a.innerHTML = this.users[i][this.element];
 			this.td.appendChild(a);
 			this.tr.appendChild(this.td);
