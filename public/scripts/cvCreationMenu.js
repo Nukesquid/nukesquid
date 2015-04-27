@@ -69,8 +69,10 @@ function getTags() {
 // functions end
 
 // json object expected by server
-var sendJson = JSON.parse('{"author":"","timestamp":"","createUser":[{"brukerFornavn":"","brukerEtternavn":"","brukerEpost":"","brukerTelefon":""}],"createCv":[{"brukerId":"","mainCv":{"cvNavn":"","cvIntroduksjon":"","cvTags":[]},"edu":{"utdanningSted":"","utdanningGrad":""},"cvExperience":{"referanseRolle":"","referanseKundeId":"","referanseTidFra":"","referanseTidTil":"","referanseInformasjon":"","tags":[]}}],"updateCv":[{"brukerId":"","cvMain":{"cvId":"","cvNavn":"","cvIntroduksjon":"","cvTags":[]},"cvExperience":{"referanseId":"","referanseRolle":"","referanseKundeId":"","referanseTidFra":"","referanseTidTil":"","referanseInformasjon":"","cvTags":[]},"edu":{"utdanningId":"","utdanningSted":"","utdanningGrad":""}}],"deleteCv":[{"brukerId":"","utdanningId":"","cvId":"","referanseId":""}],"assembleCv":[{"brukerId":"","utdanningId":[],"cvId":"","referanseId":[]}]}');
-
+function getSendJson(){
+	var sendJson = JSON.parse('{"author":"","timestamp":"","createUser":[{"brukerFornavn":"","brukerEtternavn":"","brukerEpost":"","brukerTelefon":""}],"createCv":[{"brukerId":"","mainCv":{"cvNavn":"","cvIntroduksjon":"","cvTags":[]},"edu":{"utdanningSted":"","utdanningGrad":""},"cvExperience":{"referanseRolle":"","referanseKundeId":"","referanseTidFra":"","referanseTidTil":"","referanseInformasjon":"","tags":[]}}],"updateCv":[{"brukerId":"","cvMain":{"cvId":"","cvNavn":"","cvIntroduksjon":"","cvTags":[]},"cvExperience":{"referanseId":"","referanseRolle":"","referanseKundeId":"","referanseTidFra":"","referanseTidTil":"","referanseInformasjon":"","cvTags":[]},"edu":{"utdanningId":"","utdanningSted":"","utdanningGrad":""}}],"deleteCv":[{"brukerId":"","utdanningId":"","cvId":"","referanseId":""}],"assembleCv":[{"brukerId":"","utdanningId":[],"cvId":"","referanseId":[]}]}');
+	return sendJson;
+}
 // temp vars for development 
 var loginId = '3';
 var consultant = '1';
@@ -88,6 +90,7 @@ var hovedSide = {btn:createCvMenu[0],
 				  url:'/createcv/main', 
 				  responseHandler : function(dom){ // callback for ajax
 					//write all tags til list
+					var sendJson = getSendJson();
 					leggKonsulentISelectBox(dom);
 				 	var list = dom.getElementsByTagName('ul')[0];
 					var tags = getTags();
@@ -120,6 +123,7 @@ var utdanning = {btn:createCvMenu[1],
 				 url: '/createcv/edu',
 				 responseHandler : function (dom) {
 					// place selected items in sendJson	
+					var sendJson = getSendJson();
 					leggKonsulentISelectBox(dom);
 					dom.getElementsByTagName('button')[0].addEventListener('click', function(e){
 						sendJson.author = loginId;
@@ -134,6 +138,7 @@ var erfaringer = {btn : createCvMenu[2],
 				  url : '/createcv/experiences',
 				  responseHandler : function(dom) {
 					//write all tags to list
+						var sendJson = getSendJson();
 					leggKonsulentISelectBox(dom);
 				 	var list = dom.getElementsByTagName('ul')[0];
 					var tags = getTags();
@@ -172,6 +177,7 @@ var cvLink = {
 			 	url : '/createcv/cvLink',
 			 	responseHandler : function(dom) {
 			 		var konsulent = dom.getElementsByTagName('select')[0];
+			 		var sendJson = getSendJson();
 			 		konsulent.addEventListener('change', function(){
 			// get Users cv and place them in the cv select
 			 			multipurposeGetter('/api/showuserscv/'+konsulent.options[konsulent.selectedIndex].value, function(req){
