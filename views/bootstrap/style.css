@@ -10,8 +10,7 @@
     background-repeat: no-repeat;
     background-attachment: relative;
     height: 200px;
-    margin-left: 520px;
-    margin-right: 550px;
+    margin: 0 auto;
     width: 800px;
     
 }
@@ -23,8 +22,7 @@
     font-size: 70px;
 }
 .top-banner-textbox{
-    margin-left: 510px;
-    margin-right: 550px;
+	margin: 0 auto;
     width: 820px;
 }
 .textbox-model{
@@ -38,8 +36,7 @@
     background-repeat: no-repeat;
     background-attachment: relative;
     height: 200px;
-    margin-left: 520px;
-    margin-right: 550px;
+    margin: 0 auto;
     width: 800px;
 }
 .top-banner-header2 h1{
@@ -50,8 +47,7 @@
     font-size: 70px;
 }
 .textbox-model2{
-    margin-left: 520px;
-    margin-right: 550px;
+	margin: 0 auto;
     margin-bottom: 60px;
     margin-top: 10px;
     padding: 10px;
