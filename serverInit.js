@@ -89,6 +89,7 @@ app.get('/api/showCustomers', function(req, res){
  * Vis alle referanser tilhørende en bruker
  */
 app.get('/api/referanser/:userId([0-9]+)', function(req, res){
+	console.log(req.params.userId + '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1');
 	cv.showReferanser(req, res, req.params.userId);
 });
 /*

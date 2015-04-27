@@ -176,11 +176,14 @@ var cvLink = {
 			// get Users cv and place them in the cv select
 			 			multipurposeGetter('/api/showuserscv/'+konsulent.options[konsulent.selectedIndex].value, function(req){
 			 				this.cvSelect = document.getElementsByTagName('select')[1];
+			 				this.cvSelect.innerHTML = '';
 			 				this.cver = JSON.parse(req);
-			 				for (var i=0;i<cver.length;i++){
+			 				for (var i=0;i<this.cver.length;i++){
 			 					this.option = document.createElement('option');
-			 					this.option.innerHTML = cver[i].cvNavn;
-			 					this.option.value = cver[i].cvId;
+			 					
+			 					this.option.setAttribute('value',this.cver[i].cvId);
+			 					this.option.innerHTML = this.cver[i].cvNavn;
+			 				
 			 					this.cvSelect.appendChild(this.option);
 			 				}
 			 			});
@@ -196,7 +199,6 @@ var cvLink = {
 			 					this.checkbox.value = this.edu[i].utdanningId;
 			 					this.listItem.appendChild(this.checkbox);
 			 					this.listItem.innerHTML += this.edu[i].utdanningGrad + ", " + this.edu[i].utdanningSted;
-			 					this.option.value = this.edu[i].cvId;
 			 					this.eduList.appendChild(this.listItem);
 			 					
 			 				}
@@ -214,7 +216,6 @@ var cvLink = {
 				 					this.checkbox.value = this.ref[i].referanseId;
 				 					this.listItem.appendChild(this.checkbox);
 				 					this.listItem.innerHTML += this.ref[i].navn + " - " + this.ref[i].rolle;
-				 					this.option.value = this.ref[i].cvId;
 				 					this.refList.appendChild(this.listItem);
 			 					}
 			 				}
@@ -222,11 +223,28 @@ var cvLink = {
 			 			
 					});
 			 		leggKonsulentISelectBox(dom);
-			 		this.cvSelect = document.createElement('select');
-			 		//this.cvSelect 
-			 			
-			 		
-			 		
+			 		dom.getElementsByTagName('button')[0].addEventListener('click', function(e){
+			 			sendJson.author = 'solidSnake';
+			 			sendJson.assembleCv[0].brukerId = konsulent.options[konsulent.selectedIndex].value;
+			 			this.cvSelect = document.getElementsByTagName('select')[1];
+			 			sendJson.assembleCv[0].cvId = cvSelect.options[cvSelect.selectedIndex].value;
+			 			this.eduList = document.getElementById('eduList');
+			 			this.eduList = eduList.getElementsByTagName('input');
+			 			this.refList = document.getElementById('refList');
+			 			this.refList = refList.getElementsByTagName('input');
+			 			for (var i = 0;i<this.eduList.length; i++ ){
+			 				if(this.eduList[i].checked){
+			 					sendJson.assembleCv[0].utdanningId.push(this.eduList[i].value);
+			 				}
+			 			}
+			 			console.log(this.refList.length);
+			 			for (var i = 0;i<this.refList.length;i++){
+			 				if(this.refList[i].checked){
+			 					sendJson.assembleCv[0].referanseId.push(this.refList[i].value);
+			 				}
+			 			}
+			 			postToServer(sendJson);
+			 		});
 			 	}
 			 };
 

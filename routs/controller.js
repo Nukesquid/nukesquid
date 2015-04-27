@@ -162,13 +162,13 @@ function cvInserts(author, obj){
 }
 */
 function dataParser(json){
-	console.log('dataParser sayes hi');
+	console.log(json);
 	if (json.author !== '' && typeof json.author !== undefined){
 		if (typeof json.createCv === 'object'){
 			cv.cvInserts(json.author,json.createCv);
 		}
 		if (typeof json.updateCv === 'object'){
-			cv.updates(json.author,json.updateCV);
+			cv.updates(json.author,json.updateCv);
 		}
 		if (typeof json.deleteCv === 'object'){
 			cv.removes(json.author,json.deleteCv);

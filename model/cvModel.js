@@ -54,6 +54,7 @@ cv.prototype.showReferanser = function(req, res, userId) {
     var super_ = this;
     super_.getReferanseUserData(userId, function (rows) {
         var referanseTeknologiData = [];
+        super_.jsonOut = {};
         for(var i = 0; i < rows.length; i++) {
             super_.jsonOut[rows[i].referanseId] = {
                 referanseId: rows[i].referanseId,
@@ -179,15 +180,22 @@ cv.prototype.userInserter = function (userObj){
 };
 /* Kobler sammen elementer i CVen */
 cv.prototype.connects = function(cvObj) {
+	console.log('kake');
 	for (var i = 0; i < cvObj.length; i++) {
+		console.log(i);
 		var iteration = cvObj[i];
 		if(iteration.brukerId !== '' && iteration.brukerId !== undefined) {
 			if(iteration.cvId !== '' && iteration.cvId !== undefined) {
-				if(iteration.utdanningId !== '' && iteration.utdanningId !== undefined) {
-					this.db.query('INSERT INTO UtdanningLink SET ?', {utdanningLinkCvId : iteration.cvId, utdanningLinkUtdanningId : iteration.utdanningId});
+				if(iteration.utdanningId !== undefined) {
+					for (var l = 0;l<iteration.utdanningId.length;l++ ) {
+						console.log(l);
+						this.db.query('INSERT INTO UtdanningLink SET ?', {utdanningLinkCvId : iteration.cvId, utdanningLinkUtdanningId : iteration.utdanningId[l]});
+					}
 				}
-				if (iteration.referanseId !== '' && iteration.referanseId !== undefined){
-					this.db.query('INSERT INTO ReferanseLink SET referanseId = :referanseIdId, cvId = :cvId', {referanseLinkCvId : iteration.cvId, referanseLinkReferanseId : iteration.referanseId});
+				if (iteration.referanseId !== undefined){
+					for (var l = 0;l<iteration.referanseId.length;l++) {	
+						this.db.query('INSERT INTO ReferanseLink SET ?', {referanseLinkCvId : iteration.cvId, referanseLinkReferanseId : iteration.referanseId[l]});
+					}
 				}
 			}
 		}
@@ -219,42 +227,45 @@ cv.prototype.removes = function(author, cvObj) {
 /* Oppdatere CV */
 cv.prototype.updates = function(author, cvObj) {
 	for(var i = 0; i < cvObj.length; i++) {
-		var iteration  = cvObj[i];
-		if(iteration.cvMain !== undefined) {
-			if(iteration.cvMain.cvId !== '' && iteration.cvMain.cvId !== undefined) {
-				var cvMain = iteration.cvMain;
-				cvMain.brukerId = iteration.brukerId;
-				this.db.query('UPDATE Cv SET endreatDato = NOW(), cvNavn = :cvName, cvIntroduksjons = :cvIntroduksjon WHERE cvBrukerID = :brukerId AND cvID = :cvId', cvMain);
-				if(cvMain.cvTags !== undefined) {
-					this.db.query('DELETE FROM TeknologiLink WHERE TeknologiLinkCvId = :cvId', cvMain);
-					for (var l = 0; l < cvMain.cvTags.length; l++) {
-						this.db.query('INSERT INTO TeknologiLink SET ?', {teknologiLinkCvId : cvMain.cvId, teknologiLinkTeknologiId:cvMain.cvTags[l]});
+		if (cvObj[i].brukerId  !== '' && cvObj[i].brukerId !== undefined) {
+			var iteration  = cvObj[i];
+			if(iteration.cvMain !== undefined) {
+				if(iteration.cvMain.cvId !== '' && iteration.cvMain.cvId !== undefined) {
+					var cvMain = iteration.cvMain;
+					cvMain.brukerId = iteration.brukerId;
+					this.db.query('UPDATE Cv SET endreatDato = NOW(), cvNavn = :cvName, cvIntroduksjons = :cvIntroduksjon WHERE cvBrukerID = :brukerId AND cvID = :cvId', cvMain);
+					if(cvMain.cvTags !== undefined) {
+						this.db.query('DELETE FROM TeknologiLink WHERE TeknologiLinkCvId = :cvId', cvMain);
+						for (var l = 0; l < cvMain.cvTags.length; l++) {
+							this.db.query('INSERT INTO TeknologiLink SET ?', {teknologiLinkCvId : cvMain.cvId, teknologiLinkTeknologiId:cvMain.cvTags[l]});
+						}
+					}
+				}	
+			}
+			if(iteration.cvExperiences !== undefined) {
+				if(iteration.cvExperience.referanseId !== '' && iteration.cvExperience.referanseId !== undefined) {
+					var cvReferanse = iteration.cvExperience;
+					cvReferanse.brukerId = iteration.brukerId;
+					this.db.query('UPDATE Referanser SET referanseRolle = :referanseRolle, referanseKundeId = :referanseKundeId, referanseTidFra = :referanseTidFra, referanseTidTil = :referanseTidTil, referanseInformasjon = :referanseInformasjon WHERE referanseBrukerId = :brukerId AND referanseId = :referanseId', cvReferance);
+					if (cvReferance !== undefined){
+						this.db.query('DELETE FROM TeknologiLink WHERE teknologiId = :id', cvReferance);
+						for(var m = 0; m < cvReferance.cvTags.length; m++) {
+							this.db.query('INSERT INTO TeknologiLink SET ?', {teknologiLinkReferanseId : cvReferance.id, teknologiLinkTeknologiId:cvReferance.cvTags[m]});
+						}
 					}
 				}
 			}
-		}
-		if(iteration.cvExperiences !== undefined) {
-			if(iteration.cvExperience.referanseId !== '' && iteration.cvExperience.referanseId !== undefined) {
-				var cvReferanse = iteration.cvExperience;
-				cvReferanse.brukerId = iteration.brukerId;
-				this.db.query('UPDATE Referanser SET referanseRolle = :referanseRolle, referanseKundeId = :referanseKundeId, referanseTidFra = :referanseTidFra, referanseTidTil = :referanseTidTil, referanseInformasjon = :referanseInformasjon WHERE referanseBrukerId = :brukerId AND referanseId = :referanseId', cvReferance);
-				if (cvReferance !== undefined){
-					this.db.query('DELETE FROM TeknologiLink WHERE teknologiId = :id', cvReferance);
-					for(var m = 0; m < cvReferance.cvTags.length; m++) {
-						this.db.query('INSERT INTO TeknologiLink SET ?', {teknologiLinkReferanseId : cvReferance.id, teknologiLinkTeknologiId:cvReferance.cvTags[m]});
-					}
+			if(iteration.edu !== undefined) {
+				if(iteration.edu.utdanningId !== '' && iteration.edu.utdanningId !== undefined) {
+					var edu = iteration.edu;
+					edu.brukerId = iteration.brukerId;
+					this.db.query('UPDATE Utdanning SET utdanningSted = :utdanningSted, utdanningGrad = :utdanningGrad WHERE utdanningId = :utdanningId AND utdanningBrukerId = :brukerId', edu);
 				}
-			}
-		}
-		if(iteration.edu !== undefined) {
-			if(iteration.edu.utdanningId !== '' && iteration.edu.utdanningId !== undefined) {
-				var edu = iteration.edu;
-				edu.brukerId = iteration.brukerId;
-				this.db.query('UPDATE Utdanning SET utdanningSted = :utdanningSted, utdanningGrad = :utdanningGrad WHERE utdanningId = :utdanningId AND utdanningBrukerId = :brukerId', edu);
 			}
 		}
 	}
 };
+
 /* Legger inn CV i databasen */
 cv.prototype.cvInserts = function(author, cvObj) {
 	var super_ = this;
