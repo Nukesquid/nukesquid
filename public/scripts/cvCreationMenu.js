@@ -187,6 +187,7 @@ var cvLink = {
 			// get users education and place them in ul
 			 			multipurposeGetter('/api/utdanning/'+konsulent.options[konsulent.selectedIndex].value, function(req){
 			 				this.eduList = document.getElementById('eduList');
+			 				this.eduList.innerHTML = '';
 			 				this.edu = JSON.parse(req);
 			 				for (var i=0;i<this.edu.length;i++){
 			 					this.listItem = document.createElement('li');
@@ -203,6 +204,7 @@ var cvLink = {
 			// get users referanser and put them in ul
 						multipurposeGetter('/api/referanser/'+konsulent.options[konsulent.selectedIndex].value, function(req){
 			 				this.refList = document.getElementById('refList');
+			 				this.refList.innerHTML = '';
 			 				this.ref = JSON.parse(req);
 			 				for (i in this.ref){
 			 					if(this.ref[i] != null) {
